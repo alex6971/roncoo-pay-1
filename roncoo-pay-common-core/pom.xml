@@ -8,7 +8,7 @@
 		<version>2.1.2-SNAPSHOT</version>
 	</parent>
 
-	<groupId>com.roncoo.pay.common</groupId>
+	<groupId>com.roncoo.pay</groupId>
 	<artifactId>roncoo-pay-common-core</artifactId>
 
 	<name>roncoo-pay-common-core</name>

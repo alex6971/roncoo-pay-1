@@ -20,7 +20,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.roncoo.pay.service</groupId>
+            <groupId>com.roncoo.pay</groupId>
             <artifactId>roncoo-pay-service</artifactId>
         </dependency>
         <dependency>

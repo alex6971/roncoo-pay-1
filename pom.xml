@@ -90,12 +90,12 @@
 		<dependencies>
 			<!--项目模块-->
 			<dependency>
-				<groupId>com.roncoo.pay.common</groupId>
+				<groupId>com.roncoo.pay</groupId>
 				<artifactId>roncoo-pay-common-core</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.roncoo.pay.service</groupId>
+				<groupId>com.roncoo.pay</groupId>
 				<artifactId>roncoo-pay-service</artifactId>
 				<version>${project.version}</version>
 			</dependency>
