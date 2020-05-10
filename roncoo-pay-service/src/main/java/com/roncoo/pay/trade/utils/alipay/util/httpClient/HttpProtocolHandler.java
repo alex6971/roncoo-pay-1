@@ -13,7 +13,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-/* *
+/**
  *类名：HttpProtocolHandler
  *功能：HttpClient方式访问
  *详细：获取远程HTTP数据

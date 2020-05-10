@@ -9,17 +9,20 @@ import com.roncoo.pay.common.core.page.PageParam;
 import com.roncoo.pay.common.core.utils.StringUtil;
 import com.roncoo.pay.trade.entity.RpMicroSubmitRecord;
 import com.roncoo.pay.trade.service.RpMicroSubmitRecordService;
+import java.io.File;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.util.Map;
 
 /**
  * 小微商户进件
@@ -35,7 +38,6 @@ public class MicroSubmitRecordController {
 
     /**
      * 进件列表
-     *
      * @param rpMicroSubmitRecord
      * @param pageParam
      * @param model
@@ -52,11 +54,10 @@ public class MicroSubmitRecordController {
 
     /**
      * 添加跳转
-     *
      * @param model
      * @return
      */
-//    @RequiresPermissions("trade:micro:submit:record:add")
+    //    @RequiresPermissions("trade:micro:submit:record:add")
     @RequestMapping(value = "/addUI", method = RequestMethod.GET)
     public String addUI(Model model) {
         model.addAttribute("wxCityNoList", WxCityNo.getList());
@@ -65,7 +66,6 @@ public class MicroSubmitRecordController {
 
     /**
      * 添加数据
-     *
      * @param model
      * @param rpMicroSubmitRecord
      * @param dwz
@@ -117,7 +117,7 @@ public class MicroSubmitRecordController {
         return storeEntrancePicMap;
     }
 
-//    @RequiresPermissions("trade:micro:submit:record:query")
+    //    @RequiresPermissions("trade:micro:submit:record:query")
     @RequestMapping(value = "/query/{businessCode}")
     public String checkNotify(ModelMap model, @PathVariable(name = "businessCode") String businessCode) {
         Map<String, Object> returnMap = rpMicroSubmitRecordService.microQuery(businessCode);

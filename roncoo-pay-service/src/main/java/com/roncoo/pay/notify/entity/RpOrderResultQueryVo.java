@@ -3,12 +3,11 @@ package com.roncoo.pay.notify.entity;
 import com.alibaba.fastjson.JSONObject;
 import com.roncoo.pay.common.core.entity.BaseEntity;
 import com.roncoo.pay.notify.enums.NotifyStatusEnum;
-
 import java.util.Date;
 import java.util.Map;
 
 /**
- * @功能说明:   订单结果查询实体,主要用于MQ查询上游订单结果时,查询规则及查询结果
+ * @功能说明: 订单结果查询实体, 主要用于MQ查询上游订单结果时, 查询规则及查询结果
  * @创建者: Peter
  * @创建时间: 16/6/2  上午11:20
  * @公司名称:广州市领课网络科技有限公司 龙果学院(www.roncoo.com)
@@ -39,8 +38,7 @@ public class RpOrderResultQueryVo extends BaseEntity {
         super();
     }
 
-    public RpOrderResultQueryVo(Date createTime, String notifyRule, Date lastNotifyTime, Integer notifyTimes, Integer limitNotifyTimes,
-                                String bankOrderNo, NotifyStatusEnum status) {
+    public RpOrderResultQueryVo(Date createTime, String notifyRule, Date lastNotifyTime, Integer notifyTimes, Integer limitNotifyTimes, String bankOrderNo, NotifyStatusEnum status) {
         super();
         this.createTime = createTime;
         this.notifyRule = notifyRule;
@@ -50,7 +48,6 @@ public class RpOrderResultQueryVo extends BaseEntity {
         this.bankOrderNo = bankOrderNo;
         super.setStatus(status.name());
     }
-
 
 
     /** 通知规则 */
@@ -67,8 +64,8 @@ public class RpOrderResultQueryVo extends BaseEntity {
      * 获取通知规则的Map<String, Integer>.
      * @return
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
-    public Map<Integer, Integer> getNotifyRuleMap(){
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    public Map<Integer, Integer> getNotifyRuleMap() {
         return (Map) JSONObject.parseObject(getNotifyRule());
     }
 

@@ -8,13 +8,13 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 @SpringBootApplication
 public class WebGatewayApplication extends SpringBootServletInitializer {
 
+    public static void main(String[] args) {
+        SpringApplication.run(WebGatewayApplication.class, args);
+    }
+
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
         return application.sources(WebGatewayApplication.class);
-    }
-
-    public static void main(String[] args) {
-        SpringApplication.run(WebGatewayApplication.class, args);
     }
 
 }

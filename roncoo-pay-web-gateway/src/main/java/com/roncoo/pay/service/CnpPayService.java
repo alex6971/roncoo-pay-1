@@ -4,12 +4,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.roncoo.pay.common.core.enums.SecurityRatingEnum;
 import com.roncoo.pay.common.core.exception.BizException;
 import com.roncoo.pay.common.core.utils.StringUtil;
+import com.roncoo.pay.trade.exception.TradeBizException;
 import com.roncoo.pay.trade.utils.MerchantApiUtil;
 import com.roncoo.pay.user.entity.RpUserPayConfig;
-import com.roncoo.pay.trade.exception.TradeBizException;
 import com.roncoo.pay.user.exception.PayBizException;
 import com.roncoo.pay.user.service.RpUserPayConfigService;
 import com.roncoo.pay.utils.NetworkUtil;
+import java.io.IOException;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.validation.Validator;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.Map;
 
 @Service(value = "cnpPayService")
 public class CnpPayService {
@@ -34,7 +33,6 @@ public class CnpPayService {
     private RpUserPayConfigService rpUserPayConfigService;
 
     /**
-     *
      * @param rpUserPayConfig
      * @param httpServletRequest
      */
@@ -51,7 +49,7 @@ public class CnpPayService {
             }
 
             String merchantServerIp = rpUserPayConfig.getMerchantServerIp();
-            if (merchantServerIp.indexOf(ip) < 0) {
+            if (!merchantServerIp.contains(ip)) {
                 throw new TradeBizException(TradeBizException.TRADE_PARAM_ERROR, "非法IP请求");
             }
 
@@ -69,7 +67,7 @@ public class CnpPayService {
      * @return
      * @throws BizException
      */
-    public RpUserPayConfig checkParamAndGetUserPayConfig(Object object, BindingResult bindingResult, HttpServletRequest httpServletRequest)throws BizException{
+    public RpUserPayConfig checkParamAndGetUserPayConfig(Object object, BindingResult bindingResult, HttpServletRequest httpServletRequest) throws BizException {
         validator.validate(object, bindingResult);
         if (bindingResult.hasErrors()) {// 校验银行卡信息是否完整
             String errorResponse = getErrorResponse(bindingResult);
@@ -90,7 +88,7 @@ public class CnpPayService {
             throw new PayBizException(PayBizException.USER_PAY_CONFIG_IS_NOT_EXIST, "用户异常");
         }
 
-        checkIp(rpUserPayConfig, httpServletRequest );// ip校验
+        checkIp(rpUserPayConfig, httpServletRequest);// ip校验
 
         String sign = String.valueOf(jsonParamMap.get("sign"));
         if (!MerchantApiUtil.isRightSign(jsonParamMap, rpUserPayConfig.getPaySecret(), sign)) {
@@ -103,7 +101,6 @@ public class CnpPayService {
 
     /**
      * 获取错误返回信息
-     *
      * @param bindingResult
      * @return
      */

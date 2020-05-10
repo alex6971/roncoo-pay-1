@@ -13,28 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.roncoo.pay.controller;
 
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+package com.roncoo.pay.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * <b>功能说明:
- *      该控制类用来支撑商户查询订单结果
+ * 该控制类用来支撑商户查询订单结果
  * </b>
- *
  * @author Peter
- *         <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
+ * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
 @Controller
 @RequestMapping("merchantOrderQuery")
 public class MerchantOrderQueryController {
 
     @RequestMapping
-    public void singleOrderQuery(HttpServletRequest httpServletRequest , HttpServletResponse httpServletResponse){
+    public void singleOrderQuery(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
 
     }
 }

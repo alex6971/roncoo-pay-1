@@ -11,7 +11,19 @@ spring:
     view:
       prefix: /jsp/
       suffix: .jsp
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.126.3:8848
+            
+      
 mybatis:
   mapper-locations: classpath:mybatis/mapper/*/*.xml
 logging:
   config: classpath:logback.xml
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'

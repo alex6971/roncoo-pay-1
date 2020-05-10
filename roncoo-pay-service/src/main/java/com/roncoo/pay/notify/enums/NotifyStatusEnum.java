@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public enum NotifyStatusEnum {
 
-	CREATED("通知记录已创建"),
+    CREATED("通知记录已创建"),
     SUCCESS("通知成功"),
     FAILED("通知失败"),
     HTTP_REQUEST_SUCCESS("http请求响应成功"),
@@ -39,22 +39,21 @@ public enum NotifyStatusEnum {
     public static Map<String, Map<String, Object>> toMap() {
         NotifyStatusEnum[] ary = NotifyStatusEnum.values();
         Map<String, Map<String, Object>> enumMap = new HashMap<String, Map<String, Object>>();
-        for (int num = 0; num < ary.length; num++) {
+        for (NotifyStatusEnum notifyStatusEnum : ary) {
             Map<String, Object> map = new HashMap<String, Object>();
-            String key = ary[num].name();
-            map.put("desc", ary[num].getDesc());
+            String key = notifyStatusEnum.name();
+            map.put("desc", notifyStatusEnum.getDesc());
             enumMap.put(key, map);
         }
         return enumMap;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     public static List toList() {
         NotifyStatusEnum[] ary = NotifyStatusEnum.values();
-        List list = new ArrayList();
-        for (int i = 0; i < ary.length; i++) {
+        List<Map<String, String>> list = new ArrayList<>();
+        for (NotifyStatusEnum notifyStatusEnum : ary) {
             Map<String, String> map = new HashMap<String, String>();
-            map.put("desc", ary[i].getDesc());
+            map.put("desc", notifyStatusEnum.getDesc());
             list.add(map);
         }
         return list;
@@ -62,9 +61,9 @@ public enum NotifyStatusEnum {
 
     public static NotifyStatusEnum getEnum(String name) {
         NotifyStatusEnum[] arry = NotifyStatusEnum.values();
-        for (int i = 0; i < arry.length; i++) {
-            if (arry[i].name().equalsIgnoreCase(name)) {
-                return arry[i];
+        for (NotifyStatusEnum notifyStatusEnum : arry) {
+            if (notifyStatusEnum.name().equalsIgnoreCase(name)) {
+                return notifyStatusEnum;
             }
         }
         return null;
@@ -72,7 +71,6 @@ public enum NotifyStatusEnum {
 
     /**
      * 取枚举的json字符串
-     *
      * @return
      */
     public static String getJsonStr() {

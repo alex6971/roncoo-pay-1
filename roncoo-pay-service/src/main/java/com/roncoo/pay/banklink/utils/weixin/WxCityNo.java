@@ -1,13 +1,14 @@
-
 package com.roncoo.pay.banklink.utils.weixin;
 
-import org.springframework.core.io.ClassPathResource;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.core.io.ClassPathResource;
 
 public class WxCityNo {
 
@@ -17,11 +18,11 @@ public class WxCityNo {
      * @description:从txt文件读取List<String>
      */
     public static List getList() {
-        List strList = new ArrayList();
+        List<Map<String, String>> strList = new ArrayList<>();
         InputStreamReader read = null;
         BufferedReader reader = null;
         try {
-            read = new InputStreamReader(new ClassPathResource("WxCityNo.txt").getInputStream(), "utf-8");
+            read = new InputStreamReader(new ClassPathResource("WxCityNo.txt").getInputStream(), StandardCharsets.UTF_8);
             reader = new BufferedReader(read);
             String line;
             while ((line = reader.readLine()) != null) {
@@ -30,10 +31,6 @@ public class WxCityNo {
                 strMap.put("desc", line.substring(line.indexOf("=") + 1));
                 strList.add(strMap);
             }
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -59,8 +56,8 @@ public class WxCityNo {
     public static String getCityNameByNo(String cityNo) {
         List list = getList();
         String cityName = null;
-        for (int i = 0; i < list.size(); i++) {
-            Map map = (HashMap) list.get(i);
+        for (Object o : list) {
+            Map map = (HashMap) o;
             if (cityNo.equals(map.get("name"))) {
                 cityName = (String) map.get("desc");
             }

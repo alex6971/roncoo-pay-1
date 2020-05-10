@@ -31,7 +31,6 @@ public class ActiveMqConfig {
 
     /**
      * 真正可以产生Connection的ConnectionFactory，由对应的 JMS服务厂商提供
-     *
      * @return 真正的连接工厂
      */
     @Bean(name = "targetConnectionFactory")
@@ -45,7 +44,6 @@ public class ActiveMqConfig {
 
     /**
      * Spring用于管理真正的ConnectionFactory的ConnectionFactory
-     *
      * @param pooledConnectionFactory Pooled连接工厂
      * @return 连接工厂
      */
@@ -61,7 +59,6 @@ public class ActiveMqConfig {
      * ActiveMQ为我们提供了一个PooledConnectionFactory，通过往里面注入一个ActiveMQConnectionFactory
      * 可以用来将Connection、Session和MessageProducer池化，这样可以大大的减少我们的资源消耗。
      * 要依赖于 activemq-pool包
-     *
      * @param activeMQConnectionFactory 目标连接工厂
      * @return Pooled连接工厂
      */
@@ -75,7 +72,6 @@ public class ActiveMqConfig {
 
     /**
      * 商户通知队列模板
-     *
      * @param singleConnectionFactory 连接工厂
      * @return 商户通知队列模板
      */
@@ -89,7 +85,6 @@ public class ActiveMqConfig {
 
     /**
      * 队列模板
-     *
      * @param singleConnectionFactory 连接工厂
      * @return 队列模板
      */

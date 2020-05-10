@@ -3,11 +3,10 @@ package com.roncoo.pay.trade.dao.impl;
 import com.roncoo.pay.common.core.dao.impl.BaseDaoImpl;
 import com.roncoo.pay.trade.dao.RpUserBankAuthDao;
 import com.roncoo.pay.trade.entity.RpUserBankAuth;
-import org.springframework.stereotype.Repository;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.springframework.stereotype.Repository;
 
 @Repository("rpUserBankAuthDao")
 public class RpUserBankAuthDaoImpl extends BaseDaoImpl<RpUserBankAuth> implements RpUserBankAuthDao {

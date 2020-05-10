@@ -13,22 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.trade.utils;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.security.MessageDigest;
 
 /**
  * <b>功能说明:MD5签名工具类
  * </b>
- * @author  Peter
+ * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
 public class MD5Util {
 
     private static final Logger LOG = LoggerFactory.getLogger(MD5Util.class);
+    private static final String[] hex = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
 
     /**
      * 私有构造方法,将该工具类设为单例模式.
@@ -36,14 +38,11 @@ public class MD5Util {
     private MD5Util() {
     }
 
-    private static final String[] hex = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
-
     public static String encode(String password) {
         try {
             MessageDigest md5 = MessageDigest.getInstance("MD5");
-            byte[] byteArray = md5.digest(password.getBytes("utf-8"));
-            String passwordMD5 = byteArrayToHexString(byteArray);
-            return passwordMD5;
+            byte[] byteArray = md5.digest(password.getBytes(StandardCharsets.UTF_8.name()));
+            return byteArrayToHexString(byteArray);
         } catch (Exception e) {
             LOG.error(e.toString());
         }

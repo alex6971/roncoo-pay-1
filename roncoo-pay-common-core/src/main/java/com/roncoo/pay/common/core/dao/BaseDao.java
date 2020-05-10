@@ -96,7 +96,7 @@ public interface BaseDao<T> {
      * @return：T
      * @throws
      */
-    public T getByColumn(Map<String, Object> paramMap);
+    T getByColumn(Map<String, Object> paramMap);
 
     /**
      * 根据条件查询 listBy: <br/>
@@ -104,12 +104,12 @@ public interface BaseDao<T> {
      * @param paramMap
      * @return 返回实体
      */
-    public T getBy(Map<String, Object> paramMap);
+    T getBy(Map<String, Object> paramMap);
     
     /**
      * 根据条件查询列表数据.
      */
-    public List<T> listBy(Map<String, Object> paramMap);
+    List<T> listBy(Map<String, Object> paramMap);
 
     /**
      * 函数功能说明 ： 根据column查询列表数据. 修改者名字： Along 修改日期： 2016-5-11 修改内容：
@@ -119,7 +119,7 @@ public interface BaseDao<T> {
      * @return：List<T>
      * @throws
      */
-    public List<T> listByColumn(Map<String, Object> paramMap);
+    List<T> listByColumn(Map<String, Object> paramMap);
 
     /**
      * 函数功能说明 ： 根据column查询记录数. 修改者名字： Along 修改日期： 2016-1-9 修改内容：
@@ -170,7 +170,7 @@ public interface BaseDao<T> {
      * @return：PageBean
      * @throws
      */
-    PageBean listPage(PageParam pageParam, Map<String, Object> paramMap);
+    PageBean<T> listPage(PageParam pageParam, Map<String, Object> paramMap);
 
     SqlSessionTemplate getSessionTemplate();
 

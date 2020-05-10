@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.permission.controller;
 
 import com.roncoo.pay.common.core.dwz.DwzAjax;
@@ -23,8 +24,16 @@ import com.roncoo.pay.permission.entity.PmsOperator;
 import com.roncoo.pay.permission.entity.PmsPermission;
 import com.roncoo.pay.permission.entity.PmsRole;
 import com.roncoo.pay.permission.enums.OperatorTypeEnum;
-import com.roncoo.pay.permission.service.*;
+import com.roncoo.pay.permission.service.PmsMenuRoleService;
+import com.roncoo.pay.permission.service.PmsMenuService;
+import com.roncoo.pay.permission.service.PmsOperatorRoleService;
+import com.roncoo.pay.permission.service.PmsPermissionService;
+import com.roncoo.pay.permission.service.PmsRolePermissionService;
+import com.roncoo.pay.permission.service.PmsRoleService;
 import com.roncoo.pay.permission.utils.ValidateUtils;
+import java.util.Date;
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -35,21 +44,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.List;
-
 /**
  * 权限管理模块角色管理、.<br/>
  * <p>
  * 龙果学院：www.roncoo.com
- *
  * @author：shenjialong
  */
 @Controller
 @RequestMapping("/pms/role")
 public class PmsRoleController extends BaseController {
 
+    private static Log log = LogFactory.getLog(PmsRoleController.class);
     @Autowired
     private PmsRoleService pmsRoleService;
     @Autowired
@@ -63,11 +68,8 @@ public class PmsRoleController extends BaseController {
     @Autowired
     private PmsOperatorRoleService pmsOperatorRoleService;
 
-    private static Log log = LogFactory.getLog(PmsRoleController.class);
-
     /**
      * 获取角色列表
-     *
      * @return listPmsRole or operateError .
      */
     @RequiresPermissions("pms:role:view")
@@ -87,7 +89,6 @@ public class PmsRoleController extends BaseController {
 
     /**
      * 转到添加角色页面 .
-     *
      * @return addPmsRoleUI or operateError .
      */
     @RequiresPermissions("pms:role:add")
@@ -103,12 +104,12 @@ public class PmsRoleController extends BaseController {
 
     /**
      * 保存新添加的一个角色 .
-     *
      * @return operateSuccess or operateError .
      */
     @RequiresPermissions("pms:role:add")
     @RequestMapping("/add")
-    public String addPmsRole(HttpServletRequest req, Model model, @RequestParam("roleCode") String roleCode, @RequestParam("roleName") String roleName, @RequestParam("remark") String remark, DwzAjax dwz) {
+    public String addPmsRole(HttpServletRequest req, Model model, @RequestParam("roleCode") String roleCode, @RequestParam("roleName") String roleName, @RequestParam("remark") String remark,
+            DwzAjax dwz) {
         try {
             PmsRole roleNameCheck = pmsRoleService.getByRoleNameOrRoleCode(roleName, null);
             if (roleNameCheck != null) {
@@ -142,7 +143,6 @@ public class PmsRoleController extends BaseController {
 
     /**
      * 校验角色表单数据.
-     *
      * @param pmsRole 角色信息.
      * @return msg .
      */
@@ -159,7 +159,6 @@ public class PmsRoleController extends BaseController {
 
     /**
      * 转到角色修改页面 .
-     *
      * @return editPmsRoleUI or operateError .
      */
     @RequiresPermissions("pms:role:edit")
@@ -181,7 +180,6 @@ public class PmsRoleController extends BaseController {
 
     /**
      * 保存修改后的角色信息 .
-     *
      * @return operateSuccess or operateError .
      */
     @RequiresPermissions("pms:role:edit")
@@ -224,7 +222,6 @@ public class PmsRoleController extends BaseController {
 
     /**
      * 删除一个角色
-     *
      * @return operateSuccess or operateError .
      */
     @RequiresPermissions("pms:role:delete")
@@ -254,7 +251,6 @@ public class PmsRoleController extends BaseController {
 
     /**
      * 分配权限UI
-     *
      * @return
      */
     @SuppressWarnings("unchecked")
@@ -299,8 +295,19 @@ public class PmsRoleController extends BaseController {
     }
 
     /**
+     * 得到角色和权限关联的ID字符串
+     * @return
+     */
+    private String getRolePermissionStr(String selectVal) throws Exception {
+        String roleStr = selectVal;
+        if (StringUtils.isNotBlank(roleStr) && roleStr.length() > 0) {
+            roleStr = roleStr.substring(0, roleStr.length() - 1);
+        }
+        return roleStr;
+    }
+
+    /**
      * 分配菜单UI
-     *
      * @return
      */
     @SuppressWarnings("unchecked")
@@ -341,18 +348,5 @@ public class PmsRoleController extends BaseController {
             log.error("== assignPermission exception:", e);
             return operateError("保存失败", model);
         }
-    }
-
-    /**
-     * 得到角色和权限关联的ID字符串
-     *
-     * @return
-     */
-    private String getRolePermissionStr(String selectVal) throws Exception {
-        String roleStr = selectVal;
-        if (StringUtils.isNotBlank(roleStr) && roleStr.length() > 0) {
-            roleStr = roleStr.substring(0, roleStr.length() - 1);
-        }
-        return roleStr;
     }
 }

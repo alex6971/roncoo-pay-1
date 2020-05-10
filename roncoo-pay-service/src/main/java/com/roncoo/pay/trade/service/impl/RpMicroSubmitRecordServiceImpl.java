@@ -10,18 +10,16 @@ import com.roncoo.pay.trade.dao.RpMicroSubmitRecordDao;
 import com.roncoo.pay.trade.dao.RpTradePaymentRecordDao;
 import com.roncoo.pay.trade.entity.RpMicroSubmitRecord;
 import com.roncoo.pay.trade.service.RpMicroSubmitRecordService;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * 系统配置service实现
- *
  * @author Quanf
  */
 @Service("rpMicroSubmitRecordService")

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.controller.login;
 
 import com.roncoo.pay.common.core.utils.EncryptUtil;
@@ -21,28 +22,26 @@ import com.roncoo.pay.controller.common.BaseController;
 import com.roncoo.pay.controller.common.ConstantClass;
 import com.roncoo.pay.user.entity.RpUserInfo;
 import com.roncoo.pay.user.service.RpUserInfoService;
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * 登录
  * 龙果学院：www.roncoo.com
- *
  * @author zenghao
  */
 @Controller
 public class LoginController extends BaseController {
+
     @Autowired
     private RpUserInfoService rpUserInfoService;
 
     /**
      * 函数功能说明 ：登录
-     *
      * @return String
      * @throws
      * @参数： @return
@@ -55,7 +54,6 @@ public class LoginController extends BaseController {
 
     /**
      * 函数功能说明 ：退出
-     *
      * @return String
      * @throws
      * @参数： @return
@@ -68,7 +66,6 @@ public class LoginController extends BaseController {
 
     /**
      * 函数功能说明 ：首页
-     *
      * @return String
      * @throws
      * @参数： @return

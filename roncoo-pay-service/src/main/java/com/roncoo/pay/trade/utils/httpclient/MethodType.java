@@ -13,16 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.trade.utils.httpclient;
 
 /**
  * <b>功能说明:http发送请求类型
  * </b>
- * @author  Peter
+ * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
 public enum MethodType {
-	
-		GET, POST, DELETE, PUT, TRACE, OPTION
-	
+
+    GET,
+    POST,
+    DELETE,
+    PUT,
+    TRACE,
+    OPTION
+
 }

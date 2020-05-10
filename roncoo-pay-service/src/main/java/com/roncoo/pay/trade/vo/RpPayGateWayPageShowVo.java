@@ -13,18 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.trade.vo;
 
 import com.roncoo.pay.common.core.enums.PayTypeEnum;
-import com.roncoo.pay.common.core.enums.PayWayEnum;
-
 import java.math.BigDecimal;
 import java.util.Map;
 
 /**
  * <b>功能说明:龙果支付网关页面展示实体
  * </b>
- * @author  Peter
+ * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
 public class RpPayGateWayPageShowVo {
@@ -45,7 +44,7 @@ public class RpPayGateWayPageShowVo {
     private String payKey;
 
     /** 支付方式列表 **/
-    private Map<String , PayTypeEnum> payTypeEnumMap;
+    private Map<String, PayTypeEnum> payTypeEnumMap;
 
     public BigDecimal getOrderAmount() {
         return orderAmount;

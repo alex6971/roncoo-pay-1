@@ -4,6 +4,28 @@ import com.roncoo.pay.common.core.utils.Base64;
 import com.roncoo.pay.common.core.utils.HttpClientUtil;
 import com.roncoo.pay.common.core.utils.MD5Util;
 import com.roncoo.pay.common.core.utils.StringUtil;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.security.KeyStore;
+import java.security.MessageDigest;
+import java.security.PublicKey;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import javax.crypto.Cipher;
+import javax.crypto.Mac;
+import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+import javax.net.ssl.SSLContext;
+import javax.security.cert.X509Certificate;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -26,21 +48,6 @@ import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.crypto.Cipher;
-import javax.crypto.Mac;
-import javax.crypto.spec.GCMParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-import javax.net.ssl.SSLContext;
-import javax.security.cert.X509Certificate;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.security.KeyStore;
-import java.security.MessageDigest;
-import java.security.PublicKey;
-import java.util.*;
-
 /**
  * 微信前面工具
  */
@@ -53,13 +60,10 @@ public final class WxCommonUtil {
     private static final String HTTP_USER_AGENT = "wxpay sdk java v1.0 ";
     private static final int TIMEOUT = 10000;
 
-    private WxCommonUtil() {
-
-    }
+    private WxCommonUtil() {}
 
     /**
      * 获取MD5签名
-     *
      * @param paramMap 签名参数（sign不参与签名）
      * @param key      签名密钥
      * @return MD5签名结果
@@ -73,7 +77,6 @@ public final class WxCommonUtil {
 
     /**
      * 获取HMAC-SHA256签名
-     *
      * @param paramMap 签名参数（sign不参与签名）
      * @param key      签名密钥
      * @return HMAC-SHA256签名结果
@@ -82,25 +85,24 @@ public final class WxCommonUtil {
         try {
             String payParam = getSignTemp(paramMap, key);
             Mac sha256_HMAC = Mac.getInstance("HmacSHA256");
-            SecretKeySpec secret_key = new SecretKeySpec(key.getBytes("UTF-8"), "HmacSHA256");
+            SecretKeySpec secret_key = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "HmacSHA256");
             sha256_HMAC.init(secret_key);
-            byte[] array = sha256_HMAC.doFinal(payParam.getBytes("UTF-8"));
+            byte[] array = sha256_HMAC.doFinal(payParam.getBytes(StandardCharsets.UTF_8));
             StringBuilder sb = new StringBuilder();
             for (byte item : array) {
-                sb.append(Integer.toHexString((item & 0xFF) | 0x100).substring(1, 3));
+                sb.append(Integer.toHexString((item & 0xFF) | 0x100), 1, 3);
             }
             String sign = sb.toString().toUpperCase();
             logger.info("HMAC-SHA256签名结果：{}", sign);
             return sign;
         } catch (Exception e) {
-            logger.error("HMAC-SHA256签名异常：{}", e);
+            logger.error("HMAC-SHA256签名异常：", e);
             return null;
         }
     }
 
     /**
      * 获取签名参数字符串
-     *
      * @param paramMap 签名参数（sign字段不参与签名）
      * @param payKey   签名密钥
      * @return 待签名字符串
@@ -124,7 +126,6 @@ public final class WxCommonUtil {
 
     /**
      * 生产随机数
-     *
      * @return
      */
     public final static String createNonceStr() {
@@ -139,7 +140,6 @@ public final class WxCommonUtil {
 
     /**
      * Map转Xml
-     *
      * @param paramMap 待转换参数
      * @return
      */
@@ -156,7 +156,6 @@ public final class WxCommonUtil {
 
     /**
      * Xml转Map
-     *
      * @param resultStr 带转换字符串
      * @return
      */
@@ -174,14 +173,13 @@ public final class WxCommonUtil {
             }
             return resultMap;
         } catch (DocumentException e) {
-            logger.error("微信服务商--解析XML失败！{}", e);
+            logger.error("微信服务商--解析XML失败！", e);
             return null;
         }
     }
 
     /**
      * post请求（带证书）
-     *
      * @param mchId       (商户号)证书的key
      * @param keyStoreUrl 证书的路径
      * @param data        发送的数据
@@ -198,17 +196,17 @@ public final class WxCommonUtil {
             keyStore.load(instream, mchId.toCharArray());// 这里写密码..默认是你的MCHID
             sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, mchId.toCharArray()).build();
         } catch (Exception e) {
-            logger.error("官方微信--证书加载失败!{}", e);
+            logger.error("官方微信--证书加载失败!", e);
         } finally {
             try {
                 if (instream != null) {
                     instream.close();
                 }
             } catch (IOException e) {
-                logger.error("官方微信--证书加载失败!{}", e);
+                logger.error("官方微信--证书加载失败!", e);
             }
         }
-        @SuppressWarnings("deprecation")
+        assert sslcontext != null;
         SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, new String[]{"TLSv1"}, null, SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
         CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
         try {
@@ -217,20 +215,19 @@ public final class WxCommonUtil {
             httpPost.setConfig(config);
             httpPost.addHeader(HTTP.CONTENT_TYPE, HTTP_CONTENT_TYPE);
             httpPost.addHeader(HTTP.USER_AGENT, HTTP_USER_AGENT + mchId);
-            httpPost.setEntity(new StringEntity(data, CHARSET_UTF_8));
+            httpPost.setEntity(new StringEntity(data, StandardCharsets.UTF_8));
             CloseableHttpResponse response = httpclient.execute(httpPost);
-            String result = EntityUtils.toString(response.getEntity(), CHARSET_UTF_8);
+            String result = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
             logger.info("官方微信--请求返回结果：{}", result);
             return result;
         } catch (Exception e) {
-            logger.error("官方微信--请求失败！{}", e);
+            logger.error("官方微信--请求失败！", e);
             return null;
         }
     }
 
     /**
      * post请求（不带证书）
-     *
      * @param data       请求参数
      * @param requestUrl 请求地址
      * @return 请求返回结果
@@ -239,23 +236,22 @@ public final class WxCommonUtil {
         logger.info("官方微信--请求地址：{},请求参数：{}", requestUrl, data);
         HttpClient httpClient = HttpClientUtil.getHttpClient();
         HttpPost httpPost = new HttpPost(requestUrl);
-        StringEntity stringEntity = new StringEntity(data, "UTF-8");
+        StringEntity stringEntity = new StringEntity(data, StandardCharsets.UTF_8);
         httpPost.setEntity(stringEntity);
         try {
             HttpResponse httpResponse = httpClient.execute(httpPost);
             HttpEntity httpEntity = httpResponse.getEntity();
-            String result = EntityUtils.toString(httpEntity, "UTF-8");
+            String result = EntityUtils.toString(httpEntity, StandardCharsets.UTF_8);
             logger.info("官方微信--请求返回结果：{}", result);
             return result;
         } catch (IOException e) {
-            logger.error("官方微信--请求失败！{}", e);
+            logger.error("官方微信--请求失败！", e);
             return null;
         }
     }
 
     /**
      * get请求
-     *
      * @param requestUrl 请求地址
      * @return 请求返回结果
      */
@@ -266,18 +262,17 @@ public final class WxCommonUtil {
         try {
             HttpResponse httpResponse = httpClient.execute(httpGet);
             HttpEntity httpEntity = httpResponse.getEntity();
-            String result = EntityUtils.toString(httpEntity, "UTF-8");
+            String result = EntityUtils.toString(httpEntity, StandardCharsets.UTF_8);
             logger.info("官方微信--GET请求返回结果：{}", result);
             return result;
         } catch (IOException e) {
-            logger.error("官方微信--GET请求失败！{}", e);
+            logger.error("官方微信--GET请求失败！", e);
             return null;
         }
     }
 
     /**
      * 获取平台证书
-     *
      * @param mchId
      * @param merchantSecret
      * @return
@@ -312,7 +307,7 @@ public final class WxCommonUtil {
         PublicKey publicKey = certificate.getPublicKey();
         Cipher ci = Cipher.getInstance("RSA/ECB/PKCS1Padding", "SunJCE");
         ci.init(Cipher.ENCRYPT_MODE, publicKey);
-        return Base64.encode(ci.doFinal(content.getBytes("UTF-8")));
+        return Base64.encode(ci.doFinal(content.getBytes(StandardCharsets.UTF_8)));
     }
 
 
@@ -335,7 +330,6 @@ public final class WxCommonUtil {
 
     /**
      * 文件转MD5Hash
-     *
      * @param fis
      * @return
      */

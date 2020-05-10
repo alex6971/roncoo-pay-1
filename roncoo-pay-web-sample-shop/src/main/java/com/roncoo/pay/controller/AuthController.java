@@ -3,6 +3,13 @@ package com.roncoo.pay.controller;
 import com.alibaba.fastjson.JSON;
 import com.roncoo.pay.utils.MerchantApiUtil;
 import com.roncoo.pay.utils.PayConfigUtil;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -16,13 +23,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/auth")
@@ -95,7 +95,7 @@ public class AuthController extends BaseController {
             for (Map.Entry<String, Object> entry : paramMap.entrySet()) {
                 list.add(new BasicNameValuePair(entry.getKey(), String.valueOf(entry.getValue())));
             }
-            post.setEntity(new UrlEncodedFormEntity(list, "UTF-8"));
+            post.setEntity(new UrlEncodedFormEntity(list, StandardCharsets.UTF_8));
             HttpResponse httpResponse = httpClient.execute(post);
             String result = EntityUtils.toString(httpResponse.getEntity());
             logger.info("小程序初始化鉴权--返回返回结果:" + result);

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.app.notify.core;
 
 import com.alibaba.fastjson.JSONObject;
@@ -24,16 +25,15 @@ import com.roncoo.pay.notify.enums.NotifyStatusEnum;
 import com.roncoo.pay.trade.utils.httpclient.SimpleHttpParam;
 import com.roncoo.pay.trade.utils.httpclient.SimpleHttpResult;
 import com.roncoo.pay.trade.utils.httpclient.SimpleHttpUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * <b>功能说明:
  * </b>
- * @author  Peter
+ * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
 public class NotifyTask implements Runnable, Delayed {
@@ -69,7 +69,7 @@ public class NotifyTask implements Runnable, Delayed {
 
     public int compareTo(Delayed o) {
         NotifyTask task = (NotifyTask) o;
-        return executeTime > task.executeTime ? 1 : (executeTime < task.executeTime ? -1 : 0);
+        return Long.compare(executeTime, task.executeTime);
     }
 
     public long getDelay(TimeUnit unit) {
@@ -81,28 +81,26 @@ public class NotifyTask implements Runnable, Delayed {
         Integer notifyTimes = notifyRecord.getNotifyTimes();
         // 去通知
         try {
-            LOG.info("Notify Url " + notifyRecord.getUrl()+" ;notify id:"+notifyRecord.getId()+";notify times:"+notifyRecord.getNotifyTimes());
+            LOG.info("Notify Url " + notifyRecord.getUrl() + " ;notify id:" + notifyRecord.getId() + ";notify times:" + notifyRecord.getNotifyTimes());
 
             /** 采用 httpClient */
             SimpleHttpParam param = new SimpleHttpParam(notifyRecord.getUrl());
             SimpleHttpResult result = SimpleHttpUtils.httpRequest(param);
 
-			/*
-			 * OkHttpClient client = new OkHttpClient(); Request request = new
-			 * Request.Builder().url(notifyRecord.getUrl()).build(); Response
-			 * response = client.newCall(request).execute();
-			 */
+            /*
+             * OkHttpClient client = new OkHttpClient(); Request request = new
+             * Request.Builder().url(notifyRecord.getUrl()).build(); Response
+             * response = client.newCall(request).execute();
+             */
 
             notifyRecord.setNotifyTimes(notifyTimes + 1);
             String successValue = notifyParam.getSuccessValue();
 
             String responseMsg = "";
-            Integer responseStatus = result.getStatusCode();
+            int responseStatus = result.getStatusCode();
 
             // 得到返回状态，如果是200，也就是通知成功
-            if (result != null
-                    && (responseStatus == 200 || responseStatus == 201 || responseStatus == 202 || responseStatus == 203
-                    || responseStatus == 204 || responseStatus == 205 || responseStatus == 206)) {
+            if (responseStatus == 200 || responseStatus == 201 || responseStatus == 202 || responseStatus == 203 || responseStatus == 204 || responseStatus == 205 || responseStatus == 206) {
                 responseMsg = result.getContent().trim();
                 responseMsg = responseMsg.length() >= 600 ? responseMsg.substring(0, 600) : responseMsg;
                 LOG.info("订单号： " + notifyRecord.getMerchantOrderNo() + " HTTP_STATUS：" + responseStatus + "请求返回信息：" + responseMsg);
@@ -111,33 +109,27 @@ public class NotifyTask implements Runnable, Delayed {
                     notifyPersist.updateNotifyRord(notifyRecord.getId(), notifyRecord.getNotifyTimes(), NotifyStatusEnum.SUCCESS.name());
                 } else {
                     notifyQueue.addElementToList(notifyRecord);
-                    notifyPersist.updateNotifyRord(notifyRecord.getId(), notifyRecord.getNotifyTimes(),
-                            NotifyStatusEnum.HTTP_REQUEST_SUCCESS.name());
+                    notifyPersist.updateNotifyRord(notifyRecord.getId(), notifyRecord.getNotifyTimes(), NotifyStatusEnum.HTTP_REQUEST_SUCCESS.name());
 
                 }
-                LOG.info("Update NotifyRecord:" + JSONObject.toJSONString(notifyRecord)+";responseMsg:"+responseMsg);
+                LOG.info("Update NotifyRecord:" + JSONObject.toJSONString(notifyRecord) + ";responseMsg:" + responseMsg);
             } else {
                 notifyQueue.addElementToList(notifyRecord);
                 // 再次放到通知列表中，由添加程序判断是否已经通知完毕或者通知失败
-                notifyPersist.updateNotifyRord(notifyRecord.getId(), notifyRecord.getNotifyTimes(),
-                        NotifyStatusEnum.HTTP_REQUEST_FALIED.name());
+                notifyPersist.updateNotifyRord(notifyRecord.getId(), notifyRecord.getNotifyTimes(), NotifyStatusEnum.HTTP_REQUEST_FALIED.name());
             }
 
             // 写通知日志表
-            notifyPersist.saveNotifyRecordLogs(notifyRecord.getId(), notifyRecord.getMerchantNo(), notifyRecord.getMerchantOrderNo(),
-                    notifyRecord.getUrl(), responseMsg, responseStatus);
-            LOG.info("Insert NotifyRecordLog, merchantNo:" + notifyRecord.getMerchantNo() + ",merchantOrderNo:"
-                    + notifyRecord.getMerchantOrderNo());
+            notifyPersist.saveNotifyRecordLogs(notifyRecord.getId(), notifyRecord.getMerchantNo(), notifyRecord.getMerchantOrderNo(), notifyRecord.getUrl(), responseMsg, responseStatus);
+            LOG.info("Insert NotifyRecordLog, merchantNo:" + notifyRecord.getMerchantNo() + ",merchantOrderNo:" + notifyRecord.getMerchantOrderNo());
         } catch (BizException e) {
             LOG.error("NotifyTask", e);
         } catch (Exception e) {
             LOG.error("NotifyTask", e);
             notifyQueue.addElementToList(notifyRecord);
 
-            notifyPersist.updateNotifyRord(notifyRecord.getId(), notifyRecord.getNotifyTimes(),
-                    NotifyStatusEnum.HTTP_REQUEST_FALIED.name());
-            notifyPersist.saveNotifyRecordLogs(notifyRecord.getId(), notifyRecord.getMerchantNo(), notifyRecord.getMerchantOrderNo(),
-                    notifyRecord.getUrl(), "", 0);
+            notifyPersist.updateNotifyRord(notifyRecord.getId(), notifyRecord.getNotifyTimes(), NotifyStatusEnum.HTTP_REQUEST_FALIED.name());
+            notifyPersist.saveNotifyRecordLogs(notifyRecord.getId(), notifyRecord.getMerchantNo(), notifyRecord.getMerchantOrderNo(), notifyRecord.getUrl(), "", 0);
         }
 
     }

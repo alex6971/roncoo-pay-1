@@ -1,9 +1,7 @@
 package com.roncoo.pay.trade.vo;
 
 import com.roncoo.pay.common.core.enums.PayTypeEnum;
-import com.roncoo.pay.common.core.enums.PayWayEnum;
 import com.roncoo.pay.trade.enums.TradeStatusEnum;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Map;

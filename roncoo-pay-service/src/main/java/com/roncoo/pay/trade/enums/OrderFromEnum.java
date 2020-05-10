@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.trade.enums;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import java.util.Map;
 
 /**
  * <b>功能说明:订单来源枚举类</b>
- * @author  Peter
+ * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
 public enum OrderFromEnum {
@@ -36,6 +37,19 @@ public enum OrderFromEnum {
         this.desc = desc;
     }
 
+    public static Map<String, Map<String, Object>> toMap() {
+        OrderFromEnum[] ary = OrderFromEnum.values();
+        Map<String, Map<String, Object>> enumMap = new HashMap<String, Map<String, Object>>();
+        Map<String, Object> map;
+        for (OrderFromEnum orderFromEnum : ary) {
+            map = new HashMap<String, Object>();
+            String key = orderFromEnum.name();
+            map.put("desc", orderFromEnum.getDesc());
+            enumMap.put(key, map);
+        }
+        return enumMap;
+    }
+
     public String getDesc() {
         return desc;
     }
@@ -44,25 +58,13 @@ public enum OrderFromEnum {
         this.desc = desc;
     }
 
-    public static Map<String, Map<String, Object>> toMap() {
-        OrderFromEnum[] ary = OrderFromEnum.values();
-        Map<String, Map<String, Object>> enumMap = new HashMap<String, Map<String, Object>>();
-        for (int num = 0; num < ary.length; num++) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            String key = ary[num].name();
-            map.put("desc", ary[num].getDesc());
-            enumMap.put(key, map);
-        }
-        return enumMap;
-    }
-
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     public static List toList() {
         OrderFromEnum[] ary = OrderFromEnum.values();
-        List list = new ArrayList();
-        for (int i = 0; i < ary.length; i++) {
-            Map<String, String> map = new HashMap<String, String>();
-            map.put("desc", ary[i].getDesc());
+        List<Map<String, String>> list = new ArrayList<>();
+        Map<String, String> map;
+        for (OrderFromEnum orderFromEnum : ary) {
+            map = new HashMap<String, String>();
+            map.put("desc", orderFromEnum.getDesc());
             list.add(map);
         }
         return list;
@@ -70,9 +72,9 @@ public enum OrderFromEnum {
 
     public static OrderFromEnum getEnum(String name) {
         OrderFromEnum[] arry = OrderFromEnum.values();
-        for (int i = 0; i < arry.length; i++) {
-            if (arry[i].name().equalsIgnoreCase(name)) {
-                return arry[i];
+        for (OrderFromEnum orderFromEnum : arry) {
+            if (orderFromEnum.name().equalsIgnoreCase(name)) {
+                return orderFromEnum;
             }
         }
         return null;
@@ -80,7 +82,6 @@ public enum OrderFromEnum {
 
     /**
      * 取枚举的json字符串
-     *
      * @return
      */
     public static String getJsonStr() {

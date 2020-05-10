@@ -7,6 +7,12 @@ import com.roncoo.pay.common.core.page.PageBean;
 import com.roncoo.pay.common.core.page.PageParam;
 import com.roncoo.pay.notify.entity.RpNotifyRecord;
 import com.roncoo.pay.notify.service.RpNotifyService;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.DelayQueue;
+import javax.annotation.PostConstruct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,13 +20,6 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-
-import javax.annotation.PostConstruct;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.DelayQueue;
 
 @SpringBootApplication
 public class AppNotifyApplication {
@@ -48,7 +47,7 @@ public class AppNotifyApplication {
     public static NotifyPersist cacheNotifyPersist;
 
     public static void main(String[] args) {
-//        SpringApplication.run(AppNotifyApplication.class, args);
+        //        SpringApplication.run(AppNotifyApplication.class, args);
         new SpringApplicationBuilder().sources(AppNotifyApplication.class).web(WebApplicationType.NONE).run(args);
     }
 
@@ -66,29 +65,25 @@ public class AppNotifyApplication {
     private static void startThread() {
         LOG.info("startThread");
 
-        cacheThreadPool.execute(new Runnable() {
-            public void run() {
-                try {
-                    while (true) {
-                        Thread.sleep(50);//50毫秒执行一次
-                        // 如果当前活动线程等于最大线程，那么不执行
-                        if (cacheThreadPool.getActiveCount() < cacheThreadPool.getMaxPoolSize()) {
-                            final NotifyTask task = tasks.poll();
-                            if (task != null) {
-                                cacheThreadPool.execute(new Runnable() {
-                                    public void run() {
-                                        LOG.info(cacheThreadPool.getActiveCount() + "---------");
-                                        tasks.remove(task);
-                                        task.run();
-                                    }
-                                });
-                            }
+        cacheThreadPool.execute(() -> {
+            try {
+                while (true) {
+                    Thread.sleep(50);//50毫秒执行一次
+                    // 如果当前活动线程等于最大线程，那么不执行
+                    if (cacheThreadPool.getActiveCount() < cacheThreadPool.getMaxPoolSize()) {
+                        final NotifyTask task = tasks.poll();
+                        if (task != null) {
+                            cacheThreadPool.execute(() -> {
+                                LOG.info(cacheThreadPool.getActiveCount() + "---------");
+                                tasks.remove(task);
+                                task.run();
+                            });
                         }
                     }
-                } catch (Exception e) {
-                    LOG.error("系统异常", e);
-                    e.printStackTrace();
                 }
+            } catch (Exception e) {
+                LOG.error("系统异常", e);
+                e.printStackTrace();
             }
         });
     }
@@ -96,7 +91,6 @@ public class AppNotifyApplication {
     /**
      * 从数据库中取一次数据用来当系统启动时初始化
      */
-    @SuppressWarnings("unchecked")
     private static void startInitFromDB() {
         LOG.info("get data from database");
 
@@ -116,8 +110,7 @@ public class AppNotifyApplication {
         int totalSize = (pager.getNumPerPage() - 1) / numPerPage + 1;//总页数
         while (pageNum <= totalSize) {
             List<RpNotifyRecord> list = pager.getRecordList();
-            for (int i = 0; i < list.size(); i++) {
-                RpNotifyRecord notifyRecord = list.get(i);
+            for (RpNotifyRecord notifyRecord : list) {
                 notifyRecord.setLastNotifyTime(new Date());
                 cacheNotifyQueue.addElementToList(notifyRecord);
             }

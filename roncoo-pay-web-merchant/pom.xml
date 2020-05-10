@@ -8,7 +8,6 @@
 		<version>2.1.2-SNAPSHOT</version>
 	</parent>
 
-	<groupId>com.roncoo.pay</groupId>
 	<artifactId>roncoo-pay-web-merchant</artifactId>
 	 <packaging>war</packaging>
 
@@ -21,7 +20,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.roncoo.pay.service</groupId>
+			<groupId>com.roncoo.pay</groupId>
 			<artifactId>roncoo-pay-service</artifactId>
 		</dependency>
 

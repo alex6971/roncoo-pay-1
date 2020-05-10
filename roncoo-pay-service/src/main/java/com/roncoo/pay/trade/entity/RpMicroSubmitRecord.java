@@ -93,8 +93,8 @@ public class RpMicroSubmitRecord extends BaseEntity {
      * 联系人手机
      */
     private String contactPhone;
-    
-    
+
+
     /*------*/
     /**
      * 身份证有效期
@@ -281,29 +281,6 @@ public class RpMicroSubmitRecord extends BaseEntity {
 
     @Override
     public String toString() {
-        return "RpMicroSubmitRecord{" +
-                "businessCode='" + businessCode + '\'' +
-                ", subMchId='" + subMchId + '\'' +
-                ", idCardCopy='" + idCardCopy + '\'' +
-                ", idCardNational='" + idCardNational + '\'' +
-                ", idCardName='" + idCardName + '\'' +
-                ", idCardNumber='" + idCardNumber + '\'' +
-                ", idCardValidTime='" + idCardValidTime + '\'' +
-                ", accountBank='" + accountBank + '\'' +
-                ", bankAddressCode='" + bankAddressCode + '\'' +
-                ", accountNumber='" + accountNumber + '\'' +
-                ", storeName='" + storeName + '\'' +
-                ", storeAddressCode='" + storeAddressCode + '\'' +
-                ", storeStreet='" + storeStreet + '\'' +
-                ", storeEntrancePic='" + storeEntrancePic + '\'' +
-                ", indoorPic='" + indoorPic + '\'' +
-                ", merchantShortname='" + merchantShortname + '\'' +
-                ", servicePhone='" + servicePhone + '\'' +
-                ", productDesc='" + productDesc + '\'' +
-                ", rate='" + rate + '\'' +
-                ", contactPhone='" + contactPhone + '\'' +
-                ", idCardValidTimeBegin='" + idCardValidTimeBegin + '\'' +
-                ", idCardValidTimeEnd='" + idCardValidTimeEnd + '\'' +
-                '}';
+        return "RpMicroSubmitRecord{" + "businessCode='" + businessCode + '\'' + ", subMchId='" + subMchId + '\'' + ", idCardCopy='" + idCardCopy + '\'' + ", idCardNational='" + idCardNational + '\'' + ", idCardName='" + idCardName + '\'' + ", idCardNumber='" + idCardNumber + '\'' + ", idCardValidTime='" + idCardValidTime + '\'' + ", accountBank='" + accountBank + '\'' + ", bankAddressCode='" + bankAddressCode + '\'' + ", accountNumber='" + accountNumber + '\'' + ", storeName='" + storeName + '\'' + ", storeAddressCode='" + storeAddressCode + '\'' + ", storeStreet='" + storeStreet + '\'' + ", storeEntrancePic='" + storeEntrancePic + '\'' + ", indoorPic='" + indoorPic + '\'' + ", merchantShortname='" + merchantShortname + '\'' + ", servicePhone='" + servicePhone + '\'' + ", productDesc='" + productDesc + '\'' + ", rate='" + rate + '\'' + ", contactPhone='" + contactPhone + '\'' + ", idCardValidTimeBegin='" + idCardValidTimeBegin + '\'' + ", idCardValidTimeEnd='" + idCardValidTimeEnd + '\'' + '}';
     }
 }

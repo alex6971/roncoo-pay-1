@@ -3,9 +3,8 @@ package com.roncoo.pay.trade.vo;
 /**
  * <b>功能说明:
  * </b>
- *
  * @author Peter
- *         <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
+ * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
 public class F2FPayResultVo {
 
@@ -33,7 +32,7 @@ public class F2FPayResultVo {
     private String productName;
 
     /** 支付备注 **/
-    private String  remark;
+    private String remark;
 
     /** 下单Ip **/
     private String orderIp;

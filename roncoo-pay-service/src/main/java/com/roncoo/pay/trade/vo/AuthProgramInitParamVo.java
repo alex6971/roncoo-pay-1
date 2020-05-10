@@ -1,10 +1,10 @@
 package com.roncoo.pay.trade.vo;
 
+import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 
-public class AuthProgramInitParamVo implements Serializable{
+public class AuthProgramInitParamVo implements Serializable {
 
     private static final long serialVersionUID = 8312768816414393880L;
     /**

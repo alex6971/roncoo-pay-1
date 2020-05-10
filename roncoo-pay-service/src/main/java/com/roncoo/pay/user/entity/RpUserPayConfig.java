@@ -1,25 +1,25 @@
 /*
  * Copyright 2015-2102 RonCoo(http://www.roncoo.com) Group.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.user.entity;
 
 import com.roncoo.pay.common.core.entity.BaseEntity;
 import com.roncoo.pay.common.core.enums.PublicEnum;
 import com.roncoo.pay.common.core.enums.SecurityRatingEnum;
 import com.roncoo.pay.user.enums.FundInfoTypeEnum;
-
 import java.io.Serializable;
 
 /**
@@ -43,9 +43,9 @@ public class RpUserPayConfig extends BaseEntity implements Serializable {
     private String userName;
 
     private Integer riskDay;
-    
+
     private String payKey;
-    
+
     private String fundIntoType;
 
     private String paySecret;
@@ -54,7 +54,7 @@ public class RpUserPayConfig extends BaseEntity implements Serializable {
     private String securityRating = SecurityRatingEnum.MD5.name();
 
 
-    /**商户服务器IP **/
+    /** 商户服务器IP **/
     private String merchantServerIp;
 
     public String getPaySecret() {
@@ -90,14 +90,14 @@ public class RpUserPayConfig extends BaseEntity implements Serializable {
     public void setIsAutoSett(String isAutoSett) {
         this.isAutoSett = isAutoSett == null ? null : isAutoSett.trim();
     }
-    
-    public String getPayKey() {
-		return payKey;
-	}
 
-	public void setPayKey(String payKey) {
-		this.payKey = payKey;
-	}
+    public String getPayKey() {
+        return payKey;
+    }
+
+    public void setPayKey(String payKey) {
+        this.payKey = payKey;
+    }
 
     public String getProductCode() {
         return productCode;
@@ -140,11 +140,11 @@ public class RpUserPayConfig extends BaseEntity implements Serializable {
     }
 
     public String getAuditStatusDesc() {
-    	return PublicEnum.getEnum(this.getAuditStatus()).getDesc();
+        return PublicEnum.getEnum(this.getAuditStatus()).getDesc();
     }
-    
+
     public String getFundIntoTypeDesc() {
-    	return FundInfoTypeEnum.getEnum(this.getFundIntoType()).getDesc();
+        return FundInfoTypeEnum.getEnum(this.getFundIntoType()).getDesc();
     }
 
     public String getSecurityRating() {

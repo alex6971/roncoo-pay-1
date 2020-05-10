@@ -1,12 +1,11 @@
 package com.roncoo.pay.config;
 
 import com.roncoo.pay.app.polling.entity.PollingParam;
+import java.util.HashMap;
+import java.util.Map;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Configuration
 public class PollingConfig {

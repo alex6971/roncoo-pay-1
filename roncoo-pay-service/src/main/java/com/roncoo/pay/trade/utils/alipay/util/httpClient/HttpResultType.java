@@ -4,7 +4,7 @@
  */
 package com.roncoo.pay.trade.utils.alipay.util.httpClient;
 
-/* *
+/**
  *类名：HttpResultType
  *功能：表示Http返回的结果字符方式
  *详细：表示Http返回的结果字符方式

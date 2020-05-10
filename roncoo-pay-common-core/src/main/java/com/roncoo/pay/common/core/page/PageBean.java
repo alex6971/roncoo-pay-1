@@ -1,18 +1,19 @@
 /*
  * Copyright 2015-2102 RonCoo(http://www.roncoo.com) Group.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.common.core.page;
 
 import java.io.Serializable;
@@ -22,40 +23,46 @@ import java.util.Map;
 
 /**
  * 分页组件.
- * @company：广州领课网络科技有限公司（龙果学院 www.roncoo.com）.
  * @author along
+ * @company：广州领课网络科技有限公司（龙果学院 www.roncoo.com）.
  */
 public class PageBean<T> implements Serializable {
+
     /**
-   * 
-   */
+     *
+     */
     private static final long serialVersionUID = 8470697978259453214L;
 
     // 指定的或是页面参数
-    private int currentPage; // 当前页
-    private int numPerPage; // 每页显示多少条
+    /** 当前页 */
+    private int currentPage;
+    /** 每页显示多少条 */
+    private int numPerPage;
 
     // 查询数据库
-    private int totalCount; // 总记录数
-    private List<T> recordList =new  ArrayList<T>(0); // 本页的数据列表
+    /** 总记录数 */
+    private int totalCount;
+    /** 本页的数据列表 */
+    private List<T> recordList = new ArrayList<T>(0);
 
     // 计算
-    private int totalPage; // 总页数
-    private int beginPageIndex; // 页码列表的开始索引（包含）
-    private int endPageIndex; // 页码列表的结束索引（包含）
+    /** 总页数 */
+    private int totalPage;
+    /** 页码列表的开始索引（包含） */
+    private int beginPageIndex;
+    /** 页码列表的结束索引（包含） */
+    private int endPageIndex;
 
-    private Map<String, Object> countResultMap; // 当前分页条件下的统计结果
+    /** 当前分页条件下的统计结果 */
+    private Map<String, Object> countResultMap;
 
     public PageBean() {
     }
 
     /**
      * 计算总页数 .
-     * 
-     * @param totalCount
-     *            总记录数.
-     * @param numPerPage
-     *            每页记录数.
+     * @param totalCount 总记录数.
+     * @param numPerPage 每页记录数.
      * @return totalPage 总页数.
      */
     public static int countTotalPage(int totalCount, int numPerPage) {
@@ -74,29 +81,19 @@ public class PageBean<T> implements Serializable {
      * 2、判断页面提交过来的当前页数currentPage是否大于总页数totalPage，大于则返回totalPage.<br/>
      * 3、判断currentPage是否小于1，小于则返回1.<br/>
      * 4、其它则直接返回currentPage .
-     * 
-     * @param totalCount
-     *            要分页的总记录数 .
-     * @param numPerPage
-     *            每页记录数大小 .
-     * @param currentPage
-     *            输入的当前页数 .
+     * @param totalCount  要分页的总记录数 .
+     * @param numPerPage  每页记录数大小 .
+     * @param currentPage 输入的当前页数 .
      * @return currentPage .
      */
-    public static int checkCurrentPage(int totalCount, int numPerPage,
-            int currentPage) {
+    public static int checkCurrentPage(int totalCount, int numPerPage, int currentPage) {
         int totalPage = PageBean.countTotalPage(totalCount, numPerPage); // 最大页数
         if (currentPage > totalPage) {
             // 如果页面提交过来的页数大于总页数，则将当前页设为总页数
             // 此时要求totalPage要大于获等于1
-            if (totalPage < 1) {
-                return 1;
-            }
-            return totalPage;
-        } else if (currentPage < 1) {
-            return 1; // 当前页不能小于1（避免页面输入不正确值）
+            return Math.max(totalPage, 1);
         } else {
-            return currentPage;
+            return Math.max(currentPage, 1); // 当前页不能小于1（避免页面输入不正确值）
         }
     }
 
@@ -104,9 +101,7 @@ public class PageBean<T> implements Serializable {
      * 校验页面输入的每页记录数numPerPage是否合法 .<br/>
      * 1、当页面输入的每页记录数numPerPage大于允许的最大每页记录数MAX_PAGE_SIZE时，返回MAX_PAGE_SIZE.
      * 2、如果numPerPage小于1，则返回默认的每页记录数DEFAULT_PAGE_SIZE.
-     * 
-     * @param numPerPage
-     *            页面输入的每页记录数 .
+     * @param numPerPage 页面输入的每页记录数 .
      * @return checkNumPerPage .
      */
     public static int checkNumPerPage(int numPerPage) {
@@ -121,14 +116,12 @@ public class PageBean<T> implements Serializable {
 
     /**
      * 只接受前4个必要的属性，会自动的计算出其他3个属生的值
-     * 
      * @param currentPage
      * @param numPerPage
      * @param totalCount
      * @param recordList
      */
-    public PageBean(int currentPage, int numPerPage, int totalCount,
-            List<T> recordList) {
+    public PageBean(int currentPage, int numPerPage, int totalCount, List<T> recordList) {
         this.currentPage = currentPage;
         this.numPerPage = numPerPage;
         this.totalCount = totalCount;
@@ -162,14 +155,12 @@ public class PageBean<T> implements Serializable {
 
     /**
      * 只接受前5个必要的属性，会自动的计算出其他3个属生的值
-     * 
      * @param currentPage
      * @param numPerPage
      * @param totalCount
      * @param recordList
      */
-    public PageBean(int currentPage, int numPerPage, int totalCount,
-            List<T> recordList, Map<String, Object> countResultMap) {
+    public PageBean(int currentPage, int numPerPage, int totalCount, List<T> recordList, Map<String, Object> countResultMap) {
         this.currentPage = currentPage;
         this.numPerPage = numPerPage;
         this.totalCount = totalCount;

@@ -13,32 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.roncoo.pay.trade.utils;
 
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package com.roncoo.pay.trade.utils;
 
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <b>功能说明:商户API工具类
  * </b>
- * @author  Peter
+ * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
 public class MerchantApiUtil {
 
     private static final Logger LOG = LoggerFactory.getLogger(MerchantApiUtil.class);
+
     /**
      * 获取参数签名
      * @param paramMap  签名参数
      * @param paySecret 签名密钥
      * @return
      */
-    public static String  getSign (Map<String , Object> paramMap , String paySecret){
+    public static String getSign(Map<String, Object> paramMap, String paySecret) {
         SortedMap<String, Object> smap = new TreeMap<String, Object>(paramMap);
 
         if (smap.get("sign") != null) {
@@ -48,17 +49,17 @@ public class MerchantApiUtil {
         StringBuffer stringBuffer = new StringBuffer();
         for (Map.Entry<String, Object> m : smap.entrySet()) {
             Object value = m.getValue();
-            if (value != null && StringUtils.isNotBlank(String.valueOf(value))){
+            if (value != null && StringUtils.isNotBlank(String.valueOf(value))) {
                 stringBuffer.append(m.getKey()).append("=").append(value).append("&");
             }
         }
         stringBuffer.delete(stringBuffer.length() - 1, stringBuffer.length());
 
-        LOG.info("签名原文：{}" , stringBuffer.toString());
+        LOG.info("签名原文：{}", stringBuffer.toString());
 
         String argPreSign = stringBuffer.append("&paySecret=").append(paySecret).toString();
         String signStr = MD5Util.encode(argPreSign).toUpperCase();
-        LOG.info("签名结果:{}" , signStr);
+        LOG.info("签名结果:{}", signStr);
         return signStr;
     }
 
@@ -67,12 +68,12 @@ public class MerchantApiUtil {
      * @param paramMap
      * @return
      */
-    public static String  getParamStr(Map<String , Object> paramMap){
+    public static String getParamStr(Map<String, Object> paramMap) {
         SortedMap<String, Object> smap = new TreeMap<String, Object>(paramMap);
         StringBuffer stringBuffer = new StringBuffer();
         for (Map.Entry<String, Object> m : smap.entrySet()) {
             Object value = m.getValue();
-            if (value != null && StringUtils.isNotBlank(String.valueOf(value))){
+            if (value != null && StringUtils.isNotBlank(String.valueOf(value))) {
                 stringBuffer.append(m.getKey()).append("=").append(value).append("&");
             }
         }
@@ -88,18 +89,14 @@ public class MerchantApiUtil {
      * @param signStr   原始签名密文
      * @return
      */
-    public static boolean isRightSign(Map<String , Object> paramMap , String paySecret ,String signStr){
+    public static boolean isRightSign(Map<String, Object> paramMap, String paySecret, String signStr) {
 
-        if (StringUtils.isBlank(signStr)){
+        if (StringUtils.isBlank(signStr)) {
             return false;
         }
 
         String sign = getSign(paramMap, paySecret);
-        if(signStr.equals(sign)){
-            return true;
-        }else{
-            return false;
-        }
+        return signStr.equals(sign);
     }
 
 

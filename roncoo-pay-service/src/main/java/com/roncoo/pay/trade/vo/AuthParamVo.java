@@ -1,8 +1,8 @@
 package com.roncoo.pay.trade.vo;
 
+import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 
 public class AuthParamVo implements Serializable {
 

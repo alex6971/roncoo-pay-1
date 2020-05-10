@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.*;
 
 
-/* *
+/**
  *类名：AlipayFunction
  *功能：支付宝接口公用函数类
  *详细：该类是请求、通知返回两个文件所调用的公用函数核心处理文件，不需要修改

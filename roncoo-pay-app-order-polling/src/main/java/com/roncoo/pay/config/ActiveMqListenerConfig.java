@@ -19,7 +19,6 @@ public class ActiveMqListenerConfig {
 
     /**
      * 队列目的地
-     *
      * @return 队列目的地
      */
     @Bean(name = "orderQueryQueueDestination")
@@ -29,14 +28,16 @@ public class ActiveMqListenerConfig {
 
     /**
      * 消息监听容器
-     *
      * @param singleConnectionFactory    连接工厂
      * @param orderQueryQueueDestination 消息目的地
      * @param pollingMessageListener     监听器实现
      * @return 消息监听容器
      */
     @Bean(name = "orderQueryQueueMessageListenerContainer")
-    public DefaultMessageListenerContainer orderQueryQueueMessageListenerContainer(@Qualifier("connectionFactory") SingleConnectionFactory singleConnectionFactory, @Qualifier("orderQueryQueueDestination") ActiveMQQueue orderQueryQueueDestination, @Qualifier("pollingMessageListener") PollingMessageListener pollingMessageListener) {
+    public DefaultMessageListenerContainer orderQueryQueueMessageListenerContainer(
+            @Qualifier("connectionFactory") SingleConnectionFactory singleConnectionFactory,
+            @Qualifier("orderQueryQueueDestination") ActiveMQQueue orderQueryQueueDestination, 
+            @Qualifier("pollingMessageListener") PollingMessageListener pollingMessageListener) {
         DefaultMessageListenerContainer messageListenerContainer = new DefaultMessageListenerContainer();
         messageListenerContainer.setConnectionFactory(singleConnectionFactory);
         messageListenerContainer.setDestination(orderQueryQueueDestination);

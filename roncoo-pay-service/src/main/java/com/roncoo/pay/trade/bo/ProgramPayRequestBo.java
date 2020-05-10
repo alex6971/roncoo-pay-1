@@ -1,29 +1,29 @@
 package com.roncoo.pay.trade.bo;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
  * 小程序支付请求Bo
  */
 public class ProgramPayRequestBo implements Serializable {
 
-    @Size(min = 16 , max = 32 , message = "商户Key[payKey]长度最小16位最大32位")
+    @Size(min = 16, max = 32, message = "商户Key[payKey]长度最小16位最大32位")
     @NotNull(message = "商户Key[payKey]不能为空")
     private String payKey;
 
-    @Size(min = 1 , max = 30 , message = "[openId]长度最大30位")
+    @Size(min = 1, max = 30, message = "[openId]长度最大30位")
     @NotNull(message = "[openId]不能为空")
     private String openId;
 
-    @Size(max = 200 , message = "商品名称[productName]长度最大200位")
+    @Size(max = 200, message = "商品名称[productName]长度最大200位")
     @NotNull(message = "商品名称[productName]不能为空")
     private String productName;
 
-    @Size(min = 5 ,  max = 20 , message = "商品订单号[orderNo]长度最小5位，最大20位")
+    @Size(min = 5, max = 20, message = "商品订单号[orderNo]长度最小5位，最大20位")
     @NotNull(message = "商品订单号[orderNo]不能为空")
     private String orderNo;
 
@@ -31,19 +31,19 @@ public class ProgramPayRequestBo implements Serializable {
     @NotNull(message = "订单金额[orderPrice]不能为空")
     private BigDecimal orderPrice;
 
-    @Size(min = 1 ,  max = 20 , message = "订单IP[orderIp]长度最小1位，最大20位")
+    @Size(min = 1, max = 20, message = "订单IP[orderIp]长度最小1位，最大20位")
     @NotNull(message = "订单IP[orderIp]不能为空")
     private String orderIp;
 
-    @Size(min = 1 ,  max = 8 , message = "订单日期[orderDate]长度最小1位，最大8位")
+    @Size(min = 1, max = 8, message = "订单日期[orderDate]长度最小1位，最大8位")
     @NotNull(message = "订单日期[orderDate]不能为空")
     private String orderDate;
 
-    @Size(min = 1 ,  max = 14 , message = "订单时间[orderTime]长度最小1位，最大14位")
+    @Size(min = 1, max = 14, message = "订单时间[orderTime]长度最小1位，最大14位")
     @NotNull(message = "订单时间[orderTime]不能为空")
     private String orderTime;
 
-    @Size(min = 1 ,  max = 200 , message = "异步通知地址[notifyUrl]长度最小1位，最大200位")
+    @Size(min = 1, max = 200, message = "异步通知地址[notifyUrl]长度最小1位，最大200位")
     @NotNull(message = "异步通知地址[notifyUrl]不能为空")
     private String notifyUrl;
 
@@ -52,7 +52,7 @@ public class ProgramPayRequestBo implements Serializable {
 
     private String remark;//支付备注
 
-    @Size(min = 1 ,  max = 14 , message = "交易类型[payType]长度最小1位，最大14位")
+    @Size(min = 1, max = 14, message = "交易类型[payType]长度最小1位，最大14位")
     @NotNull(message = "交易类型[payType]不能为空")
     private String payType;//支付类型
 
@@ -154,19 +154,6 @@ public class ProgramPayRequestBo implements Serializable {
 
     @Override
     public String toString() {
-        return "ProgramPayRequestBo{" +
-                "payKey='" + payKey + '\'' +
-                ", openId='" + openId + '\'' +
-                ", productName='" + productName + '\'' +
-                ", orderNo='" + orderNo + '\'' +
-                ", orderPrice=" + orderPrice +
-                ", orderIp='" + orderIp + '\'' +
-                ", orderDate='" + orderDate + '\'' +
-                ", orderTime='" + orderTime + '\'' +
-                ", notifyUrl='" + notifyUrl + '\'' +
-                ", sign='" + sign + '\'' +
-                ", remark='" + remark + '\'' +
-                ", payType='" + payType + '\'' +
-                '}';
+        return "ProgramPayRequestBo{" + "payKey='" + payKey + '\'' + ", openId='" + openId + '\'' + ", productName='" + productName + '\'' + ", orderNo='" + orderNo + '\'' + ", orderPrice=" + orderPrice + ", orderIp='" + orderIp + '\'' + ", orderDate='" + orderDate + '\'' + ", orderTime='" + orderTime + '\'' + ", notifyUrl='" + notifyUrl + '\'' + ", sign='" + sign + '\'' + ", remark='" + remark + '\'' + ", payType='" + payType + '\'' + '}';
     }
 }

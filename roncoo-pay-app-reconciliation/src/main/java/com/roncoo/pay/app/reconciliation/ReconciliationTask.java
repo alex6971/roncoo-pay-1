@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.app.reconciliation;
 
 import com.roncoo.pay.AppReconciliationApplication;
@@ -27,22 +28,20 @@ import com.roncoo.pay.reconciliation.enums.BatchStatusEnum;
 import com.roncoo.pay.reconciliation.service.RpAccountCheckBatchService;
 import com.roncoo.pay.reconciliation.vo.ReconciliationEntityVo;
 import com.roncoo.pay.user.service.BuildNoService;
+import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import javax.annotation.PostConstruct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-
 /**
  * 对账处理(包括下载对账文件、转换对账文件、对账) .
  * <p>
  * 龙果学院：www.roncoo.com
- *
  * @author：shenjialong
  */
 @Component
@@ -75,9 +74,13 @@ public class ReconciliationTask {
                     List reconciliationInterList = ReconciliationInterface.getInterface();
 
             // 根据不同的渠道发起对账
-            for (int num = 0; num < reconciliationInterList.size(); num++) {
+            /** step1:判断是否对过账 **/
+            /** step2:对账文件下载 **/
+            /** step3:解析对账文件 **/
+            /** step4:对账流程 **/
+            for (Object o : reconciliationInterList) {
                 // 判断接口是否正确
-                ReconciliationInterface reconciliationInter = (ReconciliationInterface) reconciliationInterList.get(num);
+                ReconciliationInterface reconciliationInter = (ReconciliationInterface) o;
                 if (reconciliationInter == null) {
                     LOG.info("对账接口信息" + reconciliationInter + "为空");
                     continue;
@@ -146,7 +149,6 @@ public class ReconciliationTask {
                     batch.setStatus(BatchStatusEnum.FAIL.name());
                     batch.setRemark("对账异常");
                     batchService.saveData(batch);
-                    continue;
                 }
 
             }

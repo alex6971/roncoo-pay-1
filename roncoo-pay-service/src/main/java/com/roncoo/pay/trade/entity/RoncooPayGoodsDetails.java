@@ -3,14 +3,13 @@ package com.roncoo.pay.trade.entity;
 /**
  * <b>功能说明:龙果支付商品明细描述
  * </b>
- *
  * @author Peter
- *         <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
+ * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
 public class RoncooPayGoodsDetails {
 
     /** 构造函数 传入所需参数 **/
-    public RoncooPayGoodsDetails (String goodsId , String goodsName ,Long singlePrice , Integer nums){
+    public RoncooPayGoodsDetails(String goodsId, String goodsName, Long singlePrice, Integer nums) {
         this.goodsId = goodsId;
         this.goodsName = goodsName;
         this.singlePrice = singlePrice;

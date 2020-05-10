@@ -2,6 +2,8 @@ package com.roncoo.pay;
 
 import com.roncoo.pay.app.polling.core.PollingPersist;
 import com.roncoo.pay.app.polling.core.PollingTask;
+import java.util.concurrent.DelayQueue;
+import javax.annotation.PostConstruct;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +11,6 @@ import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-
-import javax.annotation.PostConstruct;
-import java.util.concurrent.DelayQueue;
 
 @SpringBootApplication
 public class AppOrderPollingApplication {
@@ -30,7 +29,7 @@ public class AppOrderPollingApplication {
     public static PollingPersist cachePollingPersist;
 
     public static void main(String[] args) {
-//        SpringApplication.run(AppOrderPollingApplication.class, args);
+        //        SpringApplication.run(AppOrderPollingApplication.class, args);
         new SpringApplicationBuilder().sources(AppOrderPollingApplication.class).web(WebApplicationType.NONE).run(args);
     }
 
@@ -46,31 +45,27 @@ public class AppOrderPollingApplication {
     private void startThread() {
         LOG.info("==>startThread");
 
-        cacheThreadPool.execute(new Runnable() {
-            public void run() {
-                try {
-                    while (true) {
-                        Thread.sleep(100);
-                        LOG.info("==>threadPool.getActiveCount():" + cacheThreadPool.getActiveCount());
-                        LOG.info("==>threadPool.getMaxPoolSize():" + cacheThreadPool.getMaxPoolSize());
-                        // 如果当前活动线程等于最大线程，那么不执行
-                        if (cacheThreadPool.getActiveCount() < cacheThreadPool.getMaxPoolSize()) {
-                            LOG.info("==>tasks.size():" + tasks.size());
-                            final PollingTask task = tasks.take(); //使用take方法获取过期任务,如果获取不到,就一直等待,知道获取到数据
-                            if (task != null) {
-                                cacheThreadPool.execute(new Runnable() {
-                                    public void run() {
-                                        tasks.remove(task);
-                                        task.run(); // 执行通知处理
-                                        LOG.info("==>tasks.size():" + tasks.size());
-                                    }
-                                });
-                            }
+        cacheThreadPool.execute(() -> {
+            try {
+                while (true) {
+                    Thread.sleep(100);
+                    LOG.info("==>threadPool.getActiveCount():" + cacheThreadPool.getActiveCount());
+                    LOG.info("==>threadPool.getMaxPoolSize():" + cacheThreadPool.getMaxPoolSize());
+                    // 如果当前活动线程等于最大线程，那么不执行
+                    if (cacheThreadPool.getActiveCount() < cacheThreadPool.getMaxPoolSize()) {
+                        LOG.info("==>tasks.size():" + tasks.size());
+                        final PollingTask task = tasks.take(); //使用take方法获取过期任务,如果获取不到,就一直等待,知道获取到数据
+                        if (task != null) {
+                            cacheThreadPool.execute(() -> {
+                                tasks.remove(task);
+                                task.run(); // 执行通知处理
+                                LOG.info("==>tasks.size():" + tasks.size());
+                            });
                         }
                     }
-                } catch (Exception e) {
-                    LOG.error("系统异常;", e);
                 }
+            } catch (Exception e) {
+                LOG.error("系统异常;", e);
             }
         });
     }

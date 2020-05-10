@@ -11,7 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 
-/* *
+/**
  *类名：AlipayNotify
  *功能：支付宝通知处理类
  *详细：处理支付宝各接口通知返回

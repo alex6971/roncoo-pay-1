@@ -9,13 +9,21 @@ import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.alipay.api.response.AlipayTradePayResponse;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.roncoo.pay.common.core.utils.StringUtil;
-import com.roncoo.pay.trade.utils.alipay.sign.MD5;
 import com.roncoo.pay.reconciliation.utils.alipay.httpClient.HttpProtocolHandler;
 import com.roncoo.pay.reconciliation.utils.alipay.httpClient.HttpRequest;
 import com.roncoo.pay.reconciliation.utils.alipay.httpClient.HttpResponse;
 import com.roncoo.pay.reconciliation.utils.alipay.httpClient.HttpResultType;
 import com.roncoo.pay.trade.entity.RoncooPayGoodsDetails;
 import com.roncoo.pay.trade.utils.alipay.config.AlipayConfigUtil;
+import com.roncoo.pay.trade.utils.alipay.sign.MD5;
+import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import org.apache.commons.httpclient.NameValuePair;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -23,9 +31,6 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.math.BigDecimal;
-import java.util.*;
 
 public class AliPayUtil {
 
@@ -37,7 +42,6 @@ public class AliPayUtil {
 
     /**
      * 支付宝被扫(扫码设备)
-     *
      * @param outTradeNo
      * @param authCode
      * @param subject
@@ -57,7 +61,8 @@ public class AliPayUtil {
         String storeId = "ykt_pay_store_id"; // (必填) 商户门店编号，通过门店号和商家后台可以配置精准到门店的折扣信息，详询支付宝技术支持
         String timeExpress = "5m";// 支付超时，线下扫码交易定义为5分钟
 
-        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfigUtil.trade_pay_url, AlipayConfigUtil.app_id, AlipayConfigUtil.mch_private_key, format, charset, AlipayConfigUtil.ali_public_key, signType);
+        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfigUtil.trade_pay_url, AlipayConfigUtil.app_id, AlipayConfigUtil.mch_private_key, format, charset, AlipayConfigUtil.ali_public_key,
+                signType);
 
         SortedMap<String, Object> paramMap = new TreeMap<>();
         paramMap.put("out_trade_no", outTradeNo);
@@ -97,7 +102,7 @@ public class AliPayUtil {
             logger.info("支付宝返回结果:{}", responseJSON);
             return responseJSON;
         } catch (AlipayApiException e) {
-            logger.error("支付宝扫码，支付异常:{}", e);
+            logger.error("支付宝扫码，支付异常:", e);
             JSONObject resultJSON = new JSONObject();
             resultJSON.put("outTradeNo", outTradeNo);
             resultJSON.put("totalAmount", amount);
@@ -108,7 +113,6 @@ public class AliPayUtil {
 
     /**
      * 订单查询
-     *
      * @return
      */
     public static Map<String, Object> tradeQuery(String outTradeNo) {
@@ -116,7 +120,8 @@ public class AliPayUtil {
         String charset = "UTF-8";
         String format = "json";
         String signType = "RSA2";
-        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfigUtil.trade_query_url, AlipayConfigUtil.app_id, AlipayConfigUtil.mch_private_key, format, charset, AlipayConfigUtil.ali_public_key, signType);
+        AlipayClient alipayClient = new DefaultAlipayClient(AlipayConfigUtil.trade_query_url, AlipayConfigUtil.app_id, AlipayConfigUtil.mch_private_key, format, charset,
+                AlipayConfigUtil.ali_public_key, signType);
 
         SortedMap<String, Object> bizContentMap = new TreeMap<>();
         bizContentMap.put("out_trade_no", outTradeNo);
@@ -128,12 +133,12 @@ public class AliPayUtil {
             logger.info("支付宝订单查询返回结果:{}", responseJSON);
             return responseJSON;
         } catch (AlipayApiException e) {
-            logger.error("支付宝交易查询异常:{}", e);
+            logger.error("支付宝交易查询异常:", e);
             return null;
         }
     }
 
-
+    @SuppressWarnings("unchecked")
     public static Map<String, Object> singleTradeQuery(String outTradeNo) {
         SortedMap<String, String> paramMap = new TreeMap<>();
         paramMap.put("service", "single_trade_query");
@@ -170,12 +175,11 @@ public class AliPayUtil {
 
             String sign = document.getRootElement().element("sign").getText();
             if (resultSign.equals(sign)) {
-                Map<String, Object> resultMap = new HashMap<>();
-                resultMap.putAll(responseMap);
-                resultMap.put("is_success",document.getRootElement().element("is_success").getText());
+                Map<String, Object> resultMap = new HashMap<>(responseMap);
+                resultMap.put("is_success", document.getRootElement().element("is_success").getText());
                 return resultMap;
             } else {
-                logger.info("支付宝--订单查询验签不通过:{},返回签名:[{}],返回报文签名:[{}]", sign, resultSign);
+                logger.info("支付宝--订单查询验签不通过:,返回签名:[{}],返回报文签名:[{}]", sign, resultSign);
                 return null;
             }
 
@@ -187,7 +191,6 @@ public class AliPayUtil {
 
     /**
      * MAP类型数组转换成NameValuePair类型
-     *
      * @param properties MAP类型数组
      * @return NameValuePair类型数组
      */
@@ -208,6 +211,6 @@ public class AliPayUtil {
                 signBuilder.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
             }
         }
-        return MD5.sign(signBuilder.substring(0, signBuilder.length() - 1), key, "UTF-8");
+        return MD5.sign(signBuilder.substring(0, signBuilder.length() - 1), key, StandardCharsets.UTF_8.name());
     }
 }

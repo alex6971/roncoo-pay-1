@@ -2,7 +2,7 @@ package com.roncoo.pay.trade.utils.alipay.util.httpClient;
 
 import org.apache.commons.httpclient.NameValuePair;
 
-/* *
+/**
  *类名：HttpRequest
  *功能：Http请求对象的封装
  *详细：封装Http请求

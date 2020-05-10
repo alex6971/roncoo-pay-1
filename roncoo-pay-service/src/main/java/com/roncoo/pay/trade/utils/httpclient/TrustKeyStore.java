@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.trade.utils.httpclient;
 
 import javax.net.ssl.TrustManagerFactory;
@@ -20,17 +21,18 @@ import javax.net.ssl.TrustManagerFactory;
 /**
  * <b>功能说明:
  * </b>
- * @author  Peter
+ * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
 public class TrustKeyStore {
-	private TrustManagerFactory trustManagerFactory;
-	
-	TrustKeyStore(TrustManagerFactory trustManagerFactory){
-		this.trustManagerFactory = trustManagerFactory;
-	}
-	
-	TrustManagerFactory getTrustManagerFactory(){
-		return trustManagerFactory;
-	}
+
+    private TrustManagerFactory trustManagerFactory;
+
+    TrustKeyStore(TrustManagerFactory trustManagerFactory) {
+        this.trustManagerFactory = trustManagerFactory;
+    }
+
+    TrustManagerFactory getTrustManagerFactory() {
+        return trustManagerFactory;
+    }
 }

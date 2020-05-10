@@ -13,21 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.trade.service;
 
 import com.roncoo.pay.trade.bo.F2FPayRequestBo;
 import com.roncoo.pay.trade.bo.ProgramPayRequestBo;
 import com.roncoo.pay.trade.bo.ScanPayRequestBo;
-import com.roncoo.pay.trade.vo.*;
+import com.roncoo.pay.trade.vo.AuthInitResultVo;
+import com.roncoo.pay.trade.vo.AuthParamVo;
+import com.roncoo.pay.trade.vo.AuthProgramInitParamVo;
+import com.roncoo.pay.trade.vo.AuthProgramInitResultVo;
+import com.roncoo.pay.trade.vo.AuthResultVo;
+import com.roncoo.pay.trade.vo.F2FPayResultVo;
+import com.roncoo.pay.trade.vo.OrderPayResultVo;
+import com.roncoo.pay.trade.vo.ProgramPayResultVo;
+import com.roncoo.pay.trade.vo.RpPayGateWayPageShowVo;
+import com.roncoo.pay.trade.vo.ScanPayResultVo;
 import com.roncoo.pay.user.entity.RpUserPayConfig;
-
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.Map;
 
 /**
  * <b>功能说明:交易模块管理接口</b>
- *
  * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
@@ -42,74 +49,70 @@ public interface RpTradePaymentManagerService {
      * 4:调转到相应支付渠道扫码界面
      **/
 
-    public ScanPayResultVo initDirectScanPay(RpUserPayConfig rpUserPayConfig , ScanPayRequestBo scanPayRequestBo);
+    ScanPayResultVo initDirectScanPay(RpUserPayConfig rpUserPayConfig, ScanPayRequestBo scanPayRequestBo);
 
 
     /**
      * 条码支付,对应的是支付宝的条码支付或者微信的刷卡支付
-     *
      * @return
      */
-    public F2FPayResultVo f2fPay(RpUserPayConfig rpUserPayConfig , F2FPayRequestBo f2FPayRequestBo);
+    F2FPayResultVo f2fPay(RpUserPayConfig rpUserPayConfig, F2FPayRequestBo f2FPayRequestBo);
 
     /**
      * 完成扫码支付(支付宝即时到账支付)
-     *
      * @param payWayCode
      * @param notifyMap
      * @return
      */
-    public String completeScanPay(String payWayCode, Map<String, String> notifyMap);
+    String completeScanPay(String payWayCode, Map<String, String> notifyMap);
 
     /**
      * @param payWayCode
      * @param resultMap
      * @return
      */
-    public OrderPayResultVo completeScanPayByResult(String payWayCode, Map<String, String> resultMap);
+    OrderPayResultVo completeScanPayByResult(String payWayCode, Map<String, String> resultMap);
 
 
     /**
      * 初始化非直连扫码支付数据,非直连扫码支付初始化方法规则
-     *      1:根据(商户编号 + 商户订单号)确定订单是否存在
-     *       1.1:如果订单不存在,创建支付订单
-     *      2:获取商户支付配置,跳转到支付网关,选择支付方式
+     * 1:根据(商户编号 + 商户订单号)确定订单是否存在
+     * 1.1:如果订单不存在,创建支付订单
+     * 2:获取商户支付配置,跳转到支付网关,选择支付方式
      * @param rpUserPayConfig
      * @param scanPayRequestBo
      * @return
      */
-    public RpPayGateWayPageShowVo initNonDirectScanPay(RpUserPayConfig rpUserPayConfig , ScanPayRequestBo scanPayRequestBo);
+    RpPayGateWayPageShowVo initNonDirectScanPay(RpUserPayConfig rpUserPayConfig, ScanPayRequestBo scanPayRequestBo);
 
     /**
      * 非直连扫码支付,选择支付方式后,去支付
-     *
      * @param payKey
      * @param orderNo
      * @param payType
      * @param numberOfStages
      * @return
      */
-    public ScanPayResultVo toNonDirectScanPay(String payKey, String orderNo, String payType ,Integer numberOfStages);
+    ScanPayResultVo toNonDirectScanPay(String payKey, String orderNo, String payType, Integer numberOfStages);
 
     /**
      * 处理交易记录
      * 如果交易记录是成功或者本地未支付,查询上游已支付,返回TRUE
      * 如果上游支付结果为未支付,返回FALSE
-     *
      * @param bankOrderNo 银行订单号
      * @return
      */
-    public boolean processingTradeRecord(String bankOrderNo);
+    boolean processingTradeRecord(String bankOrderNo);
 
 
-    /** 小程序支付
+    /**
+     * 小程序支付
      * @return
      */
-    ProgramPayResultVo programPay(RpUserPayConfig rpUserPayConfig , ProgramPayRequestBo programPayRequestBo);
+    ProgramPayResultVo programPay(RpUserPayConfig rpUserPayConfig, ProgramPayRequestBo programPayRequestBo);
 
     /**
      * 初始化鉴权
-     *
      * @param productName
      * @param orderPrice
      * @param orderIp
@@ -120,7 +123,6 @@ public interface RpTradePaymentManagerService {
 
     /**
      * 初始化小程序鉴权
-     *
      * @param productName
      * @param orderPrice
      * @param orderIp
@@ -131,7 +133,6 @@ public interface RpTradePaymentManagerService {
 
     /**
      * 用户鉴权
-     *
      * @param merchantNo
      * @param orderNo
      * @return

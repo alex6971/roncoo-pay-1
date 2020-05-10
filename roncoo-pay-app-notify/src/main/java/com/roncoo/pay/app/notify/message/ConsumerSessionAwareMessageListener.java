@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.app.notify.message;
 
 import com.alibaba.fastjson.JSON;
@@ -24,20 +25,18 @@ import com.roncoo.pay.common.core.utils.StringUtil;
 import com.roncoo.pay.notify.entity.RpNotifyRecord;
 import com.roncoo.pay.notify.enums.NotifyStatusEnum;
 import com.roncoo.pay.notify.service.RpNotifyService;
+import java.util.Date;
+import javax.jms.Message;
+import javax.jms.MessageListener;
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import java.util.Date;
-
 /**
  * <b>功能说明:
  * </b>
- *
  * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */

@@ -12,11 +12,22 @@ import com.roncoo.pay.trade.service.RpTradePaymentManagerService;
 import com.roncoo.pay.trade.service.RpUserBankAuthService;
 import com.roncoo.pay.trade.utils.MerchantApiUtil;
 import com.roncoo.pay.trade.utils.auth.AuthConfigUtil;
-import com.roncoo.pay.trade.vo.*;
+import com.roncoo.pay.trade.vo.AuthInitResultVo;
+import com.roncoo.pay.trade.vo.AuthParamVo;
+import com.roncoo.pay.trade.vo.AuthProgramInitParamVo;
+import com.roncoo.pay.trade.vo.AuthProgramInitResultVo;
+import com.roncoo.pay.trade.vo.AuthResultVo;
+import com.roncoo.pay.trade.vo.RpPayGateWayPageShowVo;
 import com.roncoo.pay.user.entity.RpUserPayConfig;
 import com.roncoo.pay.user.exception.UserBizException;
 import com.roncoo.pay.user.service.RpUserPayConfigService;
 import com.roncoo.pay.utils.NetworkUtil;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +38,6 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/auth")
@@ -55,7 +59,7 @@ public class AuthController extends BaseController {
     @RequestMapping(value = "/initAuth")
     public String initPay(@Valid AuthParamVo paramVo, BindingResult bindingResult, HttpServletRequest request, ModelMap modelMap) {
 
-        RpUserPayConfig userPayConfig = cnpPayService.checkParamAndGetUserPayConfig(paramVo,  bindingResult, request);
+        RpUserPayConfig userPayConfig = cnpPayService.checkParamAndGetUserPayConfig(paramVo, bindingResult, request);
 
         String productName = "鉴权产品";
         String orderIp = null;
@@ -67,7 +71,7 @@ public class AuthController extends BaseController {
         if (StringUtil.isEmpty(orderIp)) {
             orderIp = "127.0.0.1";
         }
-        AuthInitResultVo resultVo = tradePaymentManagerService.initDirectAuth(productName, BigDecimal.valueOf(Double.valueOf(AuthConfigUtil.AUTH_AMOUNT)), orderIp, paramVo, userPayConfig);
+        AuthInitResultVo resultVo = tradePaymentManagerService.initDirectAuth(productName, BigDecimal.valueOf(Double.parseDouble(AuthConfigUtil.AUTH_AMOUNT)), orderIp, paramVo, userPayConfig);
         if (TradeStatusEnum.SUCCESS.equals(resultVo.getTradeStatus()) && resultVo.isAuth()) {
             return "redirect:/auth/doAuth/" + resultVo.getMerchantNo() + "/" + resultVo.getMerchantOrderNo();
         }
@@ -119,7 +123,8 @@ public class AuthController extends BaseController {
                 orderIp = "127.0.0.1";
             }
 
-            AuthProgramInitResultVo resultVo = tradePaymentManagerService.initProgramDirectAuth(productName, BigDecimal.valueOf(Double.valueOf(AuthConfigUtil.AUTH_AMOUNT)), orderIp, paramVo, userPayConfig);
+            AuthProgramInitResultVo resultVo = tradePaymentManagerService.initProgramDirectAuth(productName, BigDecimal.valueOf(Double.parseDouble(AuthConfigUtil.AUTH_AMOUNT)), orderIp, paramVo,
+                    userPayConfig);
             payResultJson = JSONObject.toJSONString(resultVo);
         } catch (Exception e) {
             JSONObject resultJson = new JSONObject();
@@ -194,7 +199,6 @@ public class AuthController extends BaseController {
 
     /**
      * 获取错误返回信息
-     *
      * @param bindingResult
      * @return
      */

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("rpNotifyRecordLogDao")
 public class RpNotifyRecordLogDaoImpl extends BaseDaoImpl<RpNotifyRecordLog> implements RpNotifyRecordLogDao {
+
     @Override
     public int deleteByPrimaryKey(String id) {
         return 0;

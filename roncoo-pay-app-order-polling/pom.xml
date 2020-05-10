@@ -10,7 +10,6 @@
 		<version>2.1.2-SNAPSHOT</version>
 	</parent>
 
-	<groupId>com.roncoo.pay</groupId>
 	<artifactId>roncoo-pay-app-order-polling</artifactId>
 
 	<name>roncoo-pay-app-order-polling</name>
@@ -22,7 +21,7 @@
 
 	<dependencies>
 		<dependency>
-			<groupId>com.roncoo.pay.service</groupId>
+			<groupId>com.roncoo.pay</groupId>
 			<artifactId>roncoo-pay-service</artifactId>
 		</dependency>
 		<dependency>

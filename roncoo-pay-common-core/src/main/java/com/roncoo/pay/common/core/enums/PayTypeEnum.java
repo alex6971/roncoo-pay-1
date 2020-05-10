@@ -72,23 +72,22 @@ public enum PayTypeEnum {
     public static Map<String, Map<String, Object>> toMap() {
         PayTypeEnum[] ary = PayTypeEnum.values();
         Map<String, Map<String, Object>> enumMap = new HashMap<String, Map<String, Object>>();
-        for (int num = 0; num < ary.length; num++) {
+        for (PayTypeEnum payTypeEnum : ary) {
             Map<String, Object> map = new HashMap<String, Object>();
-            String key = ary[num].name();
-            map.put("desc", ary[num].getDesc());
+            String key = payTypeEnum.name();
+            map.put("desc", payTypeEnum.getDesc());
             enumMap.put(key, map);
         }
         return enumMap;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     public static List toList() {
         PayTypeEnum[] ary = PayTypeEnum.values();
-        List list = new ArrayList();
-        for (int i = 0; i < ary.length; i++) {
+        List<Map<String, String>> list = new ArrayList<>();
+        for (PayTypeEnum payTypeEnum : ary) {
             Map<String, String> map = new HashMap<String, String>();
-            map.put("desc", ary[i].getDesc());
-            map.put("name", ary[i].name());
+            map.put("desc", payTypeEnum.getDesc());
+            map.put("name", payTypeEnum.name());
             list.add(map);
         }
         return list;
@@ -96,25 +95,24 @@ public enum PayTypeEnum {
 
     public static PayTypeEnum getEnum(String name) {
         PayTypeEnum[] arry = PayTypeEnum.values();
-        for (int i = 0; i < arry.length; i++) {
-            if (arry[i].name().equalsIgnoreCase(name)) {
-                return arry[i];
+        for (PayTypeEnum payTypeEnum : arry) {
+            if (payTypeEnum.name().equalsIgnoreCase(name)) {
+                return payTypeEnum;
             }
         }
         return null;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     public static List getWayList(String way) {
     	PayTypeEnum[] ary = PayTypeEnum.values();
-        List list = new ArrayList();
-        for (int i = 0; i < ary.length; i++) {
-        	if(ary[i].way.equals(way)){
-        		Map<String, String> map = new HashMap<String, String>();
-                map.put("desc", ary[i].getDesc());
-                map.put("name", ary[i].name());
+        List<Map<String, String>> list = new ArrayList<>();
+        for (PayTypeEnum payTypeEnum : ary) {
+            if (payTypeEnum.way.equals(way)) {
+                Map<String, String> map = new HashMap<String, String>();
+                map.put("desc", payTypeEnum.getDesc());
+                map.put("name", payTypeEnum.name());
                 list.add(map);
-        	}
+            }
         }
         return list;
     }

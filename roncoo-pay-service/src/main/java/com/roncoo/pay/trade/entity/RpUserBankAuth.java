@@ -1,7 +1,6 @@
 package com.roncoo.pay.trade.entity;
 
 import com.roncoo.pay.common.core.entity.BaseEntity;
-
 import java.io.Serializable;
 
 public class RpUserBankAuth extends BaseEntity implements Serializable {

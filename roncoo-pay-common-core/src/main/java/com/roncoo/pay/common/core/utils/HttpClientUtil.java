@@ -14,16 +14,15 @@ public class HttpClientUtil {
     private static final Integer SOCKET_TIME_OUT = 40 * 1000;
 
 
-    public static HttpClient getHttpClient(){
+    public static HttpClient getHttpClient() {
         RequestConfig.Builder configBuilder = RequestConfig.custom();
         configBuilder.setConnectTimeout(CONNECT_TIME_OUT);
         configBuilder.setSocketTimeout(SOCKET_TIME_OUT);
 
         HttpClientBuilder clientBuilder = HttpClients.custom();
         clientBuilder.setDefaultRequestConfig(configBuilder.build());
-        HttpClient httpClient = clientBuilder.build();
 
-        return httpClient;
+        return clientBuilder.build();
     }
 
 }

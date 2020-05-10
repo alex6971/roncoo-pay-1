@@ -7,7 +7,6 @@
 		<version>2.1.2-SNAPSHOT</version>
 	</parent>
 
-	<groupId>com.roncoo.pay.service</groupId>
 	<artifactId>roncoo-pay-service</artifactId>
 
 	<name>roncoo-pay-service</name>
@@ -25,7 +24,7 @@
         </dependency>
 
 		<dependency>
-			<groupId>com.roncoo.pay.common</groupId>
+			<groupId>com.roncoo.pay</groupId>
 			<artifactId>roncoo-pay-common-core</artifactId>
 		</dependency>
 

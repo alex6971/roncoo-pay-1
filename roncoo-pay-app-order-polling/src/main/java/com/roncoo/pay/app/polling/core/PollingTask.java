@@ -13,22 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.app.polling.core;
 
 import com.roncoo.pay.AppOrderPollingApplication;
 import com.roncoo.pay.common.core.utils.DateUtils;
 import com.roncoo.pay.notify.entity.RpOrderResultQueryVo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.Date;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <b>功能说明:
  * </b>
- *
  * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
@@ -53,7 +52,6 @@ public class PollingTask implements Runnable, Delayed {
 
     /**
      * 计算任务允许执行的开始时间(executeTime).<br/>
-     *
      * @param rpOrderResultQueryVo
      * @return
      */
@@ -74,7 +72,7 @@ public class PollingTask implements Runnable, Delayed {
      */
     public int compareTo(Delayed o) {
         PollingTask task = (PollingTask) o;
-        return executeTime > task.executeTime ? 1 : (executeTime < task.executeTime ? -1 : 0);
+        return Long.compare(executeTime, task.executeTime);
     }
 
     public long getDelay(TimeUnit unit) {

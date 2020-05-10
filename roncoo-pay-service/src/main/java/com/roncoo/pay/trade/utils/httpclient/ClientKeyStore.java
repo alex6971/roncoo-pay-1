@@ -13,23 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.trade.utils.httpclient;
 
 import javax.net.ssl.KeyManagerFactory;
 
 /**
  * <b>功能说明:</b>
- * @author  Peter
+ * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
 public class ClientKeyStore {
-	private KeyManagerFactory keyManagerFactory;
-	
-	ClientKeyStore(KeyManagerFactory keyManagerFactory){
-		this.keyManagerFactory = keyManagerFactory;
-	}
-	
-	KeyManagerFactory getKeyManagerFactory(){
-		return keyManagerFactory;
-	}
+
+    private KeyManagerFactory keyManagerFactory;
+
+    ClientKeyStore(KeyManagerFactory keyManagerFactory) {
+        this.keyManagerFactory = keyManagerFactory;
+    }
+
+    KeyManagerFactory getKeyManagerFactory() {
+        return keyManagerFactory;
+    }
 }

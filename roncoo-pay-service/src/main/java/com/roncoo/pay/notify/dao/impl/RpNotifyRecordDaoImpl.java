@@ -3,10 +3,9 @@ package com.roncoo.pay.notify.dao.impl;
 import com.roncoo.pay.common.core.dao.impl.BaseDaoImpl;
 import com.roncoo.pay.notify.dao.RpNotifyRecordDao;
 import com.roncoo.pay.notify.entity.RpNotifyRecord;
-import org.springframework.stereotype.Repository;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.springframework.stereotype.Repository;
 
 /**
  * @功能说明:
@@ -21,10 +20,10 @@ public class RpNotifyRecordDaoImpl extends BaseDaoImpl<RpNotifyRecord> implement
 
     @Override
     public RpNotifyRecord getNotifyByMerchantNoAndMerchantOrderNoAndNotifyType(String merchantNo, String merchantOrderNo, String notifyType) {
-        Map<String , Object> paramMap = new HashMap<String , Object>();
-        paramMap.put("merchantNo",merchantNo);
-        paramMap.put("merchantOrderNo",merchantOrderNo);
-        paramMap.put("notifyType",notifyType);
+        Map<String, Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("merchantNo", merchantNo);
+        paramMap.put("merchantOrderNo", merchantOrderNo);
+        paramMap.put("notifyType", notifyType);
 
         return super.getBy(paramMap);
     }

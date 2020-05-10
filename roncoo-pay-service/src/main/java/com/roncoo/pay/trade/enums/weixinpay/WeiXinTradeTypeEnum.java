@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.trade.enums.weixinpay;
 
 import java.util.ArrayList;
@@ -22,14 +23,19 @@ import java.util.Map;
 
 /**
  * <b>功能说明:微信交易类型枚举类</b>
- * @author  Peter
+ * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
 public enum WeiXinTradeTypeEnum {
 
-    /** JSAPI--公众号支付、NATIVE--原生扫码支付、APP--app支付，统一下单接口trade_type的传参可参考这里
-     MICROPAY--刷卡支付，刷卡支付有单独的支付接口，不调用统一下单接口 **/
-    JSAPI("公众号支付"),NATIVE("原生扫码支付"),APP("app支付"),MICROPAY("刷卡支付");
+    /**
+     * JSAPI--公众号支付、NATIVE--原生扫码支付、APP--app支付，统一下单接口trade_type的传参可参考这里
+     * MICROPAY--刷卡支付，刷卡支付有单独的支付接口，不调用统一下单接口
+     **/
+    JSAPI("公众号支付"),
+    NATIVE("原生扫码支付"),
+    APP("app支付"),
+    MICROPAY("刷卡支付");
 
     /** 描述 */
     private String desc;
@@ -49,22 +55,23 @@ public enum WeiXinTradeTypeEnum {
     public static Map<String, Map<String, Object>> toMap() {
         WeiXinTradeTypeEnum[] ary = WeiXinTradeTypeEnum.values();
         Map<String, Map<String, Object>> enumMap = new HashMap<String, Map<String, Object>>();
-        for (int num = 0; num < ary.length; num++) {
-            Map<String, Object> map = new HashMap<String, Object>();
-            String key = ary[num].name();
-            map.put("desc", ary[num].getDesc());
+        Map<String, Object> map;
+        for (WeiXinTradeTypeEnum weiXinTradeTypeEnum : ary) {
+            map = new HashMap<String, Object>();
+            String key = weiXinTradeTypeEnum.name();
+            map.put("desc", weiXinTradeTypeEnum.getDesc());
             enumMap.put(key, map);
         }
         return enumMap;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
     public static List toList() {
         WeiXinTradeTypeEnum[] ary = WeiXinTradeTypeEnum.values();
-        List list = new ArrayList();
-        for (int i = 0; i < ary.length; i++) {
-            Map<String, String> map = new HashMap<String, String>();
-            map.put("desc", ary[i].getDesc());
+        List<Map<String, String>> list = new ArrayList<>();
+        Map<String, String> map;
+        for (WeiXinTradeTypeEnum weiXinTradeTypeEnum : ary) {
+            map = new HashMap<String, String>();
+            map.put("desc", weiXinTradeTypeEnum.getDesc());
             list.add(map);
         }
         return list;
@@ -72,9 +79,9 @@ public enum WeiXinTradeTypeEnum {
 
     public static WeiXinTradeTypeEnum getEnum(String name) {
         WeiXinTradeTypeEnum[] arry = WeiXinTradeTypeEnum.values();
-        for (int i = 0; i < arry.length; i++) {
-            if (arry[i].name().equalsIgnoreCase(name)) {
-                return arry[i];
+        for (WeiXinTradeTypeEnum weiXinTradeTypeEnum : arry) {
+            if (weiXinTradeTypeEnum.name().equalsIgnoreCase(name)) {
+                return weiXinTradeTypeEnum;
             }
         }
         return null;
@@ -82,7 +89,6 @@ public enum WeiXinTradeTypeEnum {
 
     /**
      * 取枚举的json字符串
-     *
      * @return
      */
     public static String getJsonStr() {

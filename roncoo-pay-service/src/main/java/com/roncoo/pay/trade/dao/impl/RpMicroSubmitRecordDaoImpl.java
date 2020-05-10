@@ -6,6 +6,4 @@ import com.roncoo.pay.trade.entity.RpMicroSubmitRecord;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class RpMicroSubmitRecordDaoImpl extends BaseDaoImpl<RpMicroSubmitRecord> implements RpMicroSubmitRecordDao {
-
-}
+public class RpMicroSubmitRecordDaoImpl extends BaseDaoImpl<RpMicroSubmitRecord> implements RpMicroSubmitRecordDao {}

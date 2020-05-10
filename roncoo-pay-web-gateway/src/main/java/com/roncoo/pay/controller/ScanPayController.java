@@ -13,27 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.controller;
 
 import com.roncoo.pay.common.core.enums.PayWayEnum;
 import com.roncoo.pay.common.core.exception.BizException;
-import com.roncoo.pay.common.core.utils.DateUtils;
 import com.roncoo.pay.common.core.utils.StringUtil;
 import com.roncoo.pay.controller.common.BaseController;
 import com.roncoo.pay.service.CnpPayService;
 import com.roncoo.pay.trade.bo.ScanPayRequestBo;
-import com.roncoo.pay.trade.exception.TradeBizException;
 import com.roncoo.pay.trade.service.RpTradePaymentManagerService;
 import com.roncoo.pay.trade.service.RpTradePaymentQueryService;
-import com.roncoo.pay.trade.utils.MerchantApiUtil;
 import com.roncoo.pay.trade.utils.WeixinConfigUtil;
 import com.roncoo.pay.trade.vo.OrderPayResultVo;
 import com.roncoo.pay.trade.vo.RpPayGateWayPageShowVo;
 import com.roncoo.pay.trade.vo.ScanPayResultVo;
 import com.roncoo.pay.user.entity.RpUserPayConfig;
-import com.roncoo.pay.user.exception.UserBizException;
-import com.roncoo.pay.user.service.RpUserPayConfigService;
 import com.roncoo.pay.utils.JsonUtils;
+import java.io.IOException;
+import java.math.BigDecimal;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,18 +44,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * <b>功能说明:扫码支付控制类
  * </b>
- *
  * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
@@ -80,42 +71,41 @@ public class ScanPayController extends BaseController {
      * 支付平台根据商户传入的参数是否包含支付通道,决定需要跳转的页面
      * 1:传入支付通道参数,跳转到相应的支付通道扫码页面
      * 2:未传入支付通道参数,跳转到
-     *
      * @return
      */
     @RequestMapping("/initPay")
     public String initPay(@ModelAttribute ScanPayRequestBo scanPayRequestBo, BindingResult bindingResult, Model model, HttpServletRequest httpServletRequest) {
-        logger.info("======>进入扫码支付{}" , scanPayRequestBo);
+        logger.info("======>进入扫码支付{}", scanPayRequestBo);
 
-    try{
-        RpUserPayConfig rpUserPayConfig = cnpPayService.checkParamAndGetUserPayConfig(scanPayRequestBo,  bindingResult, httpServletRequest);
+        try {
+            RpUserPayConfig rpUserPayConfig = cnpPayService.checkParamAndGetUserPayConfig(scanPayRequestBo, bindingResult, httpServletRequest);
 
-        if (StringUtil.isEmpty(scanPayRequestBo.getPayType())) {//非直连方式
-            logger.info("======>扫码支付，非直连方式");
-            RpPayGateWayPageShowVo payGateWayPageShowVo = rpTradePaymentManagerService.initNonDirectScanPay( rpUserPayConfig , scanPayRequestBo);
-            model.addAttribute("payGateWayPageShowVo", payGateWayPageShowVo);//支付网关展示数据
-            return "gateway";
+            if (StringUtil.isEmpty(scanPayRequestBo.getPayType())) {//非直连方式
+                logger.info("======>扫码支付，非直连方式");
+                RpPayGateWayPageShowVo payGateWayPageShowVo = rpTradePaymentManagerService.initNonDirectScanPay(rpUserPayConfig, scanPayRequestBo);
+                model.addAttribute("payGateWayPageShowVo", payGateWayPageShowVo);//支付网关展示数据
+                return "gateway";
 
-        } else {//直连方式
-            logger.info("======>扫码支付，直连方式");
-            BigDecimal orderPrice = scanPayRequestBo.getOrderPrice();
-            ScanPayResultVo scanPayResultVo = rpTradePaymentManagerService.initDirectScanPay(rpUserPayConfig , scanPayRequestBo);
+            } else {//直连方式
+                logger.info("======>扫码支付，直连方式");
+                BigDecimal orderPrice = scanPayRequestBo.getOrderPrice();
+                ScanPayResultVo scanPayResultVo = rpTradePaymentManagerService.initDirectScanPay(rpUserPayConfig, scanPayRequestBo);
 
-            model.addAttribute("codeUrl", scanPayResultVo.getCodeUrl());//支付二维码
+                model.addAttribute("codeUrl", scanPayResultVo.getCodeUrl());//支付二维码
 
-            if (PayWayEnum.WEIXIN.name().equals(scanPayResultVo.getPayWayCode())) {
-                model.addAttribute("queryUrl", WeixinConfigUtil.readConfig("order_query_url") + "?orderNO=" + scanPayRequestBo.getOrderNo() + "&payKey=" + scanPayRequestBo.getPayKey());
-                model.addAttribute("productName", scanPayRequestBo.getProductName());//产品名称
-                model.addAttribute("orderPrice", orderPrice);//订单价格
-                model.addAttribute("orderNo", scanPayRequestBo.getOrderNo());//订单号
-                model.addAttribute("payKey", scanPayRequestBo.getPayKey());//支付Key
+                if (PayWayEnum.WEIXIN.name().equals(scanPayResultVo.getPayWayCode())) {
+                    model.addAttribute("queryUrl", WeixinConfigUtil.readConfig("order_query_url") + "?orderNO=" + scanPayRequestBo.getOrderNo() + "&payKey=" + scanPayRequestBo.getPayKey());
+                    model.addAttribute("productName", scanPayRequestBo.getProductName());//产品名称
+                    model.addAttribute("orderPrice", orderPrice);//订单价格
+                    model.addAttribute("orderNo", scanPayRequestBo.getOrderNo());//订单号
+                    model.addAttribute("payKey", scanPayRequestBo.getPayKey());//支付Key
 
-                return "weixinPayScanPay";
-            } else if (PayWayEnum.ALIPAY.name().equals(scanPayResultVo.getPayWayCode())) {
-                return "alipayDirectPay";
+                    return "weixinPayScanPay";
+                } else if (PayWayEnum.ALIPAY.name().equals(scanPayResultVo.getPayWayCode())) {
+                    return "alipayDirectPay";
+                }
             }
-        }
-        return "gateway";
+            return "gateway";
 
         } catch (BizException e) {
             logger.error("业务异常:", e);
@@ -133,7 +123,7 @@ public class ScanPayController extends BaseController {
     @RequestMapping("/toPay/{orderNo}/{payType}/{payKey}")
     public String toPay(@PathVariable("payKey") String payKey, @PathVariable("orderNo") String orderNo, @PathVariable("payType") String payType, Model model) {
 
-        ScanPayResultVo scanPayResultVo = rpTradePaymentManagerService.toNonDirectScanPay(payKey, orderNo, payType , 3);
+        ScanPayResultVo scanPayResultVo = rpTradePaymentManagerService.toNonDirectScanPay(payKey, orderNo, payType, 3);
 
         model.addAttribute("codeUrl", scanPayResultVo.getCodeUrl());//支付二维码
 
@@ -151,7 +141,6 @@ public class ScanPayController extends BaseController {
 
     /**
      * 支付结果查询接口
-     *
      * @param httpServletResponse
      */
     @RequestMapping("orderQuery")

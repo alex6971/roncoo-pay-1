@@ -5,7 +5,7 @@ import org.apache.commons.httpclient.Header;
 
 import java.io.UnsupportedEncodingException;
 
-/* *
+/**
  *类名：HttpResponse
  *功能：Http返回对象的封装
  *详细：封装Http返回信息

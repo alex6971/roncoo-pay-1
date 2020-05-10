@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.trade.entity;
 
 import com.roncoo.pay.common.core.entity.BaseEntity;
@@ -21,14 +22,13 @@ import com.roncoo.pay.common.core.enums.PayWayEnum;
 import com.roncoo.pay.common.core.utils.DateUtils;
 import com.roncoo.pay.trade.enums.TradeStatusEnum;
 import com.roncoo.pay.trade.enums.TrxTypeEnum;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**
  * <b>功能说明:商户支付记录实体类</b>
- * @author  Peter
+ * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
 public class RpTradePaymentRecord extends BaseEntity implements Serializable {
@@ -95,7 +95,7 @@ public class RpTradePaymentRecord extends BaseEntity implements Serializable {
     /** 订单金额 **/
     private BigDecimal orderAmount;
 
-    /** 平台收入 初始创建默认为-**/
+    /** 平台收入 初始创建默认为- **/
     private BigDecimal platIncome = BigDecimal.ZERO;
 
     /** 费率 **/
@@ -378,14 +378,6 @@ public class RpTradePaymentRecord extends BaseEntity implements Serializable {
         this.notifyUrl = notifyUrl == null ? null : notifyUrl.trim();
     }
 
-    public String getPayWayCode() {
-        return payWayCode;
-    }
-
-    public void setPayWayCode(String payWayCode) {
-        this.payWayCode = payWayCode == null ? null : payWayCode.trim();
-    }
-
     public String getPayWayName() {
         return payWayName;
     }
@@ -418,7 +410,6 @@ public class RpTradePaymentRecord extends BaseEntity implements Serializable {
         this.isRefund = isRefund == null ? null : isRefund.trim();
     }
 
-
     public BigDecimal getSuccessRefundAmount() {
         return successRefundAmount;
     }
@@ -427,21 +418,12 @@ public class RpTradePaymentRecord extends BaseEntity implements Serializable {
         this.successRefundAmount = successRefundAmount;
     }
 
-
     public String getOrderFrom() {
         return orderFrom;
     }
 
     public void setOrderFrom(String orderFrom) {
         this.orderFrom = orderFrom == null ? null : orderFrom.trim();
-    }
-
-    public String getPayTypeCode() {
-        return payTypeCode;
-    }
-
-    public void setPayTypeCode(String payTypeCode) {
-        this.payTypeCode = payTypeCode == null ? null : payTypeCode.trim();
     }
 
     public String getPayTypeName() {
@@ -516,6 +498,18 @@ public class RpTradePaymentRecord extends BaseEntity implements Serializable {
         this.refundTimes = refundTimes;
     }
 
+    public String getBankReturnMsg() {
+        return bankReturnMsg;
+    }
+
+    public void setBankReturnMsg(String bankReturnMsg) {
+        this.bankReturnMsg = bankReturnMsg;
+    }
+
+    public String getTrxTypeDesc() {
+        return TrxTypeEnum.getEnum(this.getTrxType()).getDesc();
+    }
+
     public String getTrxType() {
         return trxType;
     }
@@ -524,28 +518,32 @@ public class RpTradePaymentRecord extends BaseEntity implements Serializable {
         this.trxType = trxType;
     }
 
-    public String getBankReturnMsg() {
-        return bankReturnMsg;
+    public String getPayWayNameDesc() {
+        return PayWayEnum.getEnum(this.getPayWayCode()).getDesc() + "-" + PayTypeEnum.getEnum(this.getPayTypeCode()).getDesc();
     }
 
-    public void setBankReturnMsg(String bankReturnMsg) {
-        this.bankReturnMsg = bankReturnMsg;
+    public String getPayWayCode() {
+        return payWayCode;
     }
-    
-    public String getTrxTypeDesc() {
-    	return TrxTypeEnum.getEnum(this.getTrxType()).getDesc();
+
+    public void setPayWayCode(String payWayCode) {
+        this.payWayCode = payWayCode == null ? null : payWayCode.trim();
     }
-    
-    public String getPayWayNameDesc() {
-    	return PayWayEnum.getEnum(this.getPayWayCode()).getDesc()+"-"+ PayTypeEnum.getEnum(this.getPayTypeCode()).getDesc();
+
+    public String getPayTypeCode() {
+        return payTypeCode;
     }
-    
+
+    public void setPayTypeCode(String payTypeCode) {
+        this.payTypeCode = payTypeCode == null ? null : payTypeCode.trim();
+    }
+
     public String getStatusDesc() {
-    	return TradeStatusEnum.getEnum(this.getStatus()).getDesc();
+        return TradeStatusEnum.getEnum(this.getStatus()).getDesc();
     }
-    
+
     public String getCreateTimeDesc() {
-    	return DateUtils.formatDate(this.getCreateTime(), "yyyy-MM-dd HH:mm");
+        return DateUtils.formatDate(this.getCreateTime(), "yyyy-MM-dd HH:mm");
     }
 
     @Override

@@ -14,7 +14,7 @@ public class AppReconciliationApplication {
 
 
     public static void main(String[] args) {
-//        SpringApplication.run(AppReconciliationApplication.class, args);
+        //        SpringApplication.run(AppReconciliationApplication.class, args);
         context = new SpringApplicationBuilder().sources(AppReconciliationApplication.class).web(WebApplicationType.NONE).run(args);
     }
 

@@ -1,6 +1,14 @@
 package com.roncoo.pay.banklink.utils.weixin;
 
 import com.roncoo.pay.trade.utils.WeixinConfigUtil;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.KeyStore;
+import java.util.HashMap;
+import java.util.Map;
+import javax.net.ssl.SSLContext;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -15,14 +23,6 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.net.ssl.SSLContext;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.security.KeyStore;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * 微信图片上传
  */
@@ -36,12 +36,14 @@ public class UploadUtils {
         try {
             String mch_id = WeixinConfigUtil.readConfig("service_mch_id");
             String media_hash = WxCommonUtil.md5HashCode(new FileInputStream(file));
+            assert media_hash != null;
             String sign_type = "HMAC-SHA256";
             Map<String, Object> paramMap = new HashMap<>();
             paramMap.put("mch_id", mch_id);
             paramMap.put("media_hash", media_hash);
             paramMap.put("sign_type", sign_type);
             String sign = WxCommonUtil.sha256Sign(paramMap, WeixinConfigUtil.readConfig("service_pay_key"));
+            assert sign != null;
             MultipartEntityBuilder multipartEntityBuilder = MultipartEntityBuilder.create();
             multipartEntityBuilder.addTextBody("mch_id", mch_id, ContentType.MULTIPART_FORM_DATA);
             multipartEntityBuilder.addBinaryBody("media", file, ContentType.create("image/png"), file.getName());
@@ -58,7 +60,7 @@ public class UploadUtils {
                 sslcontext = SSLContexts.custom().loadKeyMaterial(keyStore, mch_id.toCharArray()).build();
             } catch (Exception e) {
                 returnMap.put("return_msg", e.getMessage());
-                logger.error("官方微信--证书加载失败!{}", e);
+                logger.error("官方微信--证书加载失败!", e);
             } finally {
                 try {
                     if (instream != null) {
@@ -66,9 +68,10 @@ public class UploadUtils {
                     }
                 } catch (IOException e) {
                     returnMap.put("return_msg", e.getMessage());
-                    logger.error("官方微信--证书加载失败!{}", e);
+                    logger.error("官方微信--证书加载失败!", e);
                 }
             }
+            assert sslcontext != null;
             SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslcontext, new String[]{"TLSv1"}, null, SSLConnectionSocketFactory.BROWSER_COMPATIBLE_HOSTNAME_VERIFIER);
             CloseableHttpClient httpclient = HttpClients.custom().setSSLSocketFactory(sslsf).build();
             try {
@@ -80,12 +83,11 @@ public class UploadUtils {
                 httpPost.addHeader(HTTP.USER_AGENT, "wxpay sdk java v1.0 " + mch_id);
                 httpPost.setEntity(multipartEntityBuilder.build());
                 CloseableHttpResponse response = httpclient.execute(httpPost);
-                String result = EntityUtils.toString(response.getEntity(), "UTF-8");
+                String result = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
                 logger.info("官方微信--请求返回结果：{}", result);
-                Map<String, Object> resultMap = WxCommonUtil.xmlToMap(result);
-                return resultMap;
+                return WxCommonUtil.xmlToMap(result);
             } catch (Exception e) {
-                logger.error("官方微信--请求失败！{}", e);
+                logger.error("官方微信--请求失败！", e);
                 return returnMap;
             }
         } catch (Exception e) {
@@ -96,7 +98,6 @@ public class UploadUtils {
 
     /**
      * 删除临时文件
-     *
      * @param files
      */
     public static void deleteFile(File... files) {

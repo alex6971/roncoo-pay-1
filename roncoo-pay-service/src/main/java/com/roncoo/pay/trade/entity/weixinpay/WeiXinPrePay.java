@@ -13,16 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.trade.entity.weixinpay;
 
 import com.roncoo.pay.common.core.utils.StringUtil;
 import com.roncoo.pay.trade.enums.weixinpay.WeiXinTradeTypeEnum;
-
 import java.io.Serializable;
 
 /**
  * <b>功能说明:微信预支付实体类</b>
- * @author  Peter
+ * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
 public class WeiXinPrePay implements Serializable {
@@ -33,7 +33,7 @@ public class WeiXinPrePay implements Serializable {
     /** 商户号 必填 **/
     private String mchId;
 
-    /** 设备号  终端设备号(门店号或收银设备ID)，注意：PC网页或公众号内支付请传"WEB" 默认为'WEB'**/
+    /** 设备号  终端设备号(门店号或收银设备ID)，注意：PC网页或公众号内支付请传"WEB" 默认为'WEB' **/
     private String deviceInfo = "WEB";
 
     /** 随机字符串 **/

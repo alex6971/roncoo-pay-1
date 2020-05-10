@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.trade.vo;
 
 import java.io.Serializable;
@@ -21,7 +22,7 @@ import java.math.BigDecimal;
 /**
  * <b>功能说明:扫码支付结果展示实体
  * </b>
- * @author  Peter
+ * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
 public class ScanPayResultVo implements Serializable {

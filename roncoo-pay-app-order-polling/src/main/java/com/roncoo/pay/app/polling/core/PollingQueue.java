@@ -13,23 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.app.polling.core;
 
 
 import com.roncoo.pay.AppOrderPollingApplication;
 import com.roncoo.pay.common.core.utils.DateUtils;
 import com.roncoo.pay.notify.entity.RpOrderResultQueryVo;
+import java.io.Serializable;
+import java.util.Date;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
-import java.util.Date;
-
 /**
  * <b>功能说明:
  * </b>
- * @author  Peter
+ * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
 @Component
@@ -55,15 +55,16 @@ public class PollingQueue implements Serializable {
         Integer notifyTimes = rpOrderResultQueryVo.getNotifyTimes(); // 通知次数
         Integer maxNotifyTimes = rpOrderResultQueryVo.getLimitNotifyTimes(); // 最大通知次数
 
-        if (rpOrderResultQueryVo.getNotifyTimes().intValue() == 0) {
+        if (rpOrderResultQueryVo.getNotifyTimes() == 0) {
             rpOrderResultQueryVo.setLastNotifyTime(new Date()); // 第一次发送(取当前时间)
-        }else{
+        } else {
             rpOrderResultQueryVo.setLastNotifyTime(rpOrderResultQueryVo.getEditTime()); // 非第一次发送（取上一次修改时间，也是上一次发送时间）
         }
 
         if (notifyTimes < maxNotifyTimes) {
             // 未超过最大通知次数，继续下一次通知
-            LOG.info("===>bank order No  " + rpOrderResultQueryVo.getBankOrderNo() + ", 上次通知时间lastNotifyTime:" + DateUtils.formatDate(rpOrderResultQueryVo.getLastNotifyTime(), "yyyy-MM-dd HH:mm:ss SSS"));
+            LOG.info("===>bank order No  " + rpOrderResultQueryVo.getBankOrderNo() + ", 上次通知时间lastNotifyTime:" + DateUtils.formatDate(rpOrderResultQueryVo.getLastNotifyTime(),
+                    "yyyy-MM-dd HH:mm:ss SSS"));
             AppOrderPollingApplication.tasks.put(new PollingTask(rpOrderResultQueryVo));
         }
 

@@ -1,7 +1,9 @@
 package com.roncoo.pay.permission.shiro.filter;
 
-import org.springframework.web.filter.OncePerRequestFilter;
-
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -9,10 +11,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Random;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 /**
  * 定义验证码拦截器 生成验证码方式：<br/>
@@ -20,7 +19,6 @@ import java.util.Random;
  * 2.调用JCaptcha.captchaService.getImageChallengeForID(id),第三方jar包生成
  * <p>
  * 龙果学院：www.roncoo.com
- *
  * @author：shenjialong
  */
 @WebFilter(filterName = "rcCaptchaFilter", asyncSupported = true, urlPatterns = "/rcCaptcha.jpg")
@@ -61,11 +59,11 @@ public class RcCaptchaFilter extends OncePerRequestFilter {
         }
 
         // 随机产生4个数字的验证码
-        String rs = "";
+        StringBuilder rs = new StringBuilder();
         String rn = "";
         for (int i = 0; i < 4; i++) {
             rn = String.valueOf(r.nextInt(10));
-            rs += rn;
+            rs.append(rn);
             gc.setColor(new Color(20 + r.nextInt(110), 20 + r.nextInt(110), 20 + r.nextInt(110)));
             gc.drawString(rn, 13 * i + 1, 16);
         }
@@ -73,7 +71,7 @@ public class RcCaptchaFilter extends OncePerRequestFilter {
         // 释放图形上下文环境
         gc.dispose();
 
-        request.getSession().setAttribute("rcCaptcha", rs);
+        request.getSession().setAttribute("rcCaptcha", rs.toString());
         ImageIO.write(bimg, "jpeg", out);
         try {
             out.flush();

@@ -1,14 +1,17 @@
 package com.roncoo.pay.reconciliation.utils;
 
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.*;
-import java.util.Map.Entry;
 
 /**
  * 签名算法<br>
@@ -25,9 +28,9 @@ import java.util.Map.Entry;
  */
 public class SignHelper {
 
-    private static final Log LOG = LogFactory.getLog(SignHelper.class);
-
     public static final String WX_SIGN_KEY = "key";
+    private static final Log LOG = LogFactory.getLog(SignHelper.class);
+    private static final String[] hexDigits = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f"};
 
     /**
      * 签名结果比较忽略大小写
@@ -52,20 +55,7 @@ public class SignHelper {
             return false;
         }
         String resultSign = getSign(map, keyName, keyValue);
-        if (sign.toUpperCase().equals(resultSign.toUpperCase())) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * 返回签名的大写字符串
-     * @param map
-     * @param keyValue
-     * @return
-     */
-    public static String getSign(Map<String, String> map, String keyValue) {
-        return getSign(map, WX_SIGN_KEY, keyValue);
+        return sign.toUpperCase().equals(resultSign.toUpperCase());
     }
 
     /**
@@ -78,8 +68,7 @@ public class SignHelper {
     public static String getSign(Map<String, String> map, String keyName, String keyValue) {
         // 过滤空值
         HashMap<String, String> temp = new HashMap<String, String>();
-        for (Iterator<Entry<String, String>> it = map.entrySet().iterator(); it.hasNext();) {
-            Entry<String, String> entry = it.next();
+        for (Entry<String, String> entry : map.entrySet()) {
             if (StringUtils.isNotBlank(entry.getKey()) && StringUtils.isNotBlank(entry.getValue())) {
                 temp.put(entry.getKey(), entry.getValue());
             }
@@ -87,11 +76,7 @@ public class SignHelper {
 
         // sort
         List<Entry<String, String>> paramsArray = new ArrayList<Entry<String, String>>(temp.entrySet());
-        Collections.sort(paramsArray, new Comparator<Entry<String, String>>() {
-            public int compare(Entry<String, String> o1, Entry<String, String> o2) {
-                return (o1.getKey()).toString().compareTo(o2.getKey());
-            }
-        });
+        paramsArray.sort(Entry.comparingByKey());
 
         // 拼接字符串
         StringBuilder buff = new StringBuilder();
@@ -102,18 +87,16 @@ public class SignHelper {
             buff.setLength(buff.length() - 1);
         }
 
-        buff.append("&" + keyName + "=").append(keyValue);
+        buff.append("&").append(keyName).append("=").append(keyValue);
         String sourceStr = buff.toString();
 
         try {
-            String resultSign = md5Encode(sourceStr, "UTF-8").toUpperCase();
+            String resultSign = md5Encode(sourceStr, StandardCharsets.UTF_8.name()).toUpperCase();
             if (LOG.isDebugEnabled()) {
                 LOG.debug("sign source: [" + sourceStr + "], result sign: [" + resultSign + "]");
             }
             return resultSign;
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("验证签名失败", e);
-        } catch (UnsupportedEncodingException e) {
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
             throw new RuntimeException("验证签名失败", e);
         }
     }
@@ -121,16 +104,16 @@ public class SignHelper {
     private static String md5Encode(String origin, String charsetname) throws NoSuchAlgorithmException, UnsupportedEncodingException {
         MessageDigest md = MessageDigest.getInstance("MD5");
         if (StringUtils.isBlank(charsetname)) {
-            return byteArrayToHexString(md.digest(new String(origin).getBytes()));
+            return byteArrayToHexString(md.digest(origin.getBytes()));
         } else {
-            return byteArrayToHexString(md.digest(new String(origin).getBytes(charsetname)));
+            return byteArrayToHexString(md.digest(origin.getBytes(charsetname)));
         }
     }
 
-    private static String byteArrayToHexString(byte b[]) {
+    private static String byteArrayToHexString(byte[] b) {
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < b.length; i++) {
-            sb.append(byteToHexString(b[i]));
+        for (byte value : b) {
+            sb.append(byteToHexString(value));
         }
         return sb.toString();
     }
@@ -145,6 +128,14 @@ public class SignHelper {
         return hexDigits[d1] + hexDigits[d2];
     }
 
-    private static final String hexDigits[] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
+    /**
+     * 返回签名的大写字符串
+     * @param map
+     * @param keyValue
+     * @return
+     */
+    public static String getSign(Map<String, String> map, String keyValue) {
+        return getSign(map, WX_SIGN_KEY, keyValue);
+    }
 
 }

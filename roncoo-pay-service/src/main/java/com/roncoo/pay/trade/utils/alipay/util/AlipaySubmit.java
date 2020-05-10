@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 
-/* *
+/**
  *类名：AlipaySubmit
  *功能：支付宝各接口请求提交类
  *详细：构造支付宝各接口表单HTML文本，获取远程HTTP数据

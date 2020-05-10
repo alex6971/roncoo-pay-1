@@ -2,15 +2,19 @@ package com.roncoo.pay.trade.utils.weixin;
 
 import com.alibaba.fastjson.JSONObject;
 import com.roncoo.pay.common.core.utils.StringUtil;
-import com.roncoo.pay.trade.utils.MD5Util;
-import com.roncoo.pay.trade.utils.WeixinConfigUtil;
 import com.roncoo.pay.trade.entity.RoncooPayGoodsDetails;
+import com.roncoo.pay.trade.utils.MD5Util;
 import com.roncoo.pay.trade.utils.WeiXinPayUtils;
+import com.roncoo.pay.trade.utils.WeixinConfigUtil;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.math.BigDecimal;
-import java.util.*;
 
 public class WeiXinPayUtil {
 
@@ -22,7 +26,6 @@ public class WeiXinPayUtil {
 
     /**
      * 微信被扫(扫码设备)
-     *
      * @param outTradeNo
      * @param body
      * @param totalAmount
@@ -53,8 +56,7 @@ public class WeiXinPayUtil {
         if (resultMap == null || resultMap.isEmpty()) {
             return null;
         }
-        SortedMap<String, Object> responseMap = new TreeMap<>();
-        responseMap.putAll(resultMap);
+        SortedMap<String, Object> responseMap = new TreeMap<>(resultMap);
         String resultSign = getSign(responseMap, WeixinConfigUtil.partnerKey);
         if (resultSign.equals(resultMap.get("sign"))) {
             resultMap.put("verify", "YES");
@@ -67,10 +69,10 @@ public class WeiXinPayUtil {
 
     /**
      * 小程序支付
-     *
      * @return
      */
-    public static Map<String, Object> appletPay(String outTradeNo, String body, BigDecimal totalAmount, String spbillCreateIp, String notifyUrl, String openid, List<RoncooPayGoodsDetails> goodsDetails) {
+    public static Map<String, Object> appletPay(String outTradeNo, String body, BigDecimal totalAmount, String spbillCreateIp, String notifyUrl, String openid,
+            List<RoncooPayGoodsDetails> goodsDetails) {
         String nonce_str = getnonceStr();
         Integer totalFee = totalAmount.multiply(BigDecimal.valueOf(100L)).intValue();
         String tradeType = "JSAPI";
@@ -109,8 +111,7 @@ public class WeiXinPayUtil {
         if (resultMap == null || resultMap.isEmpty()) {
             return null;
         }
-        SortedMap<String, Object> responseMap = new TreeMap<>();
-        responseMap.putAll(resultMap);
+        SortedMap<String, Object> responseMap = new TreeMap<>(resultMap);
         String resultSign = getSign(responseMap, WeixinConfigUtil.xPayKey);
         if (resultSign.equals(resultMap.get("sign"))) {
             resultMap.put("verify", "YES");
@@ -123,7 +124,6 @@ public class WeiXinPayUtil {
 
     /**
      * 生成随机字符串
-     *
      * @return
      */
     public static String getnonceStr() {
@@ -137,7 +137,6 @@ public class WeiXinPayUtil {
 
     /**
      * 签名
-     *
      * @param paramMap
      * @param key
      * @return
@@ -156,7 +155,6 @@ public class WeiXinPayUtil {
 
     /**
      * 转xml格式
-     *
      * @param paramMap
      * @return
      */

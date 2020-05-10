@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.controller;
 
 /**
  * <b>功能说明:后台通知结果控制类
  * </b>
- *
  * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
@@ -26,7 +26,6 @@ package com.roncoo.pay.controller;
 import com.roncoo.pay.common.core.enums.PayWayEnum;
 import com.roncoo.pay.common.core.utils.StringUtil;
 import com.roncoo.pay.trade.dao.RpUserBankAuthDao;
-import com.roncoo.pay.trade.vo.OrderPayResultVo;
 import com.roncoo.pay.trade.entity.RpTradePaymentRecord;
 import com.roncoo.pay.trade.entity.RpUserBankAuth;
 import com.roncoo.pay.trade.exception.TradeBizException;
@@ -34,18 +33,17 @@ import com.roncoo.pay.trade.service.RpTradePaymentManagerService;
 import com.roncoo.pay.trade.service.RpTradePaymentQueryService;
 import com.roncoo.pay.trade.utils.WeiXinPayUtils;
 import com.roncoo.pay.trade.utils.alipay.util.AliPayUtil;
+import com.roncoo.pay.trade.vo.OrderPayResultVo;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 @Controller
 @RequestMapping(value = "/scanPayNotify")
@@ -84,17 +82,15 @@ public class ScanPayNotifyController {
 
         Map<String, String> resultMap = new HashMap<String, String>();
         Map requestParams = httpServletRequest.getParameterMap();
-        for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext(); ) {
-            String name = (String) iter.next();
+        for (Object o : requestParams.keySet()) {
+            String name = (String) o;
             String[] values = (String[]) requestParams.get(name);
             String valueStr = "";
             for (int i = 0; i < values.length; i++) {
-                valueStr = (i == values.length - 1) ? valueStr + values[i]
-                        : valueStr + values[i] + ",";
+                valueStr = (i == values.length - 1) ? valueStr + values[i] : valueStr + values[i] + ",";
             }
             //乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
-//            valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
-            valueStr = new String(valueStr);
+            //            valueStr = new String(valueStr.getBytes("ISO-8859-1"), StandardCharsets.UTF_8);
             resultMap.put(name, valueStr);
         }
 

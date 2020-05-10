@@ -1,22 +1,22 @@
 /*
  * Copyright 2015-2102 RonCoo(http://www.roncoo.com) Group.
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.account.entity;
 
 import com.roncoo.pay.common.core.entity.BaseEntity;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -27,9 +27,9 @@ import java.math.BigDecimal;
  */
 public class RpAccount extends BaseEntity implements Serializable {
 
-	/** 账户编号 **/
+    /** 账户编号 **/
     private String accountNo;
-    
+
     /** 账户余额 **/
     private BigDecimal balance;
 
@@ -45,7 +45,7 @@ public class RpAccount extends BaseEntity implements Serializable {
     /** 总支出 **/
     private BigDecimal totalExpend;
 
-    /** 今日收益  **/
+    /** 今日收益 **/
     private BigDecimal todayIncome;
 
     /** 今日支出 **/
@@ -61,51 +61,49 @@ public class RpAccount extends BaseEntity implements Serializable {
     private String userNo;
 
     private static final long serialVersionUID = 1L;
-    
+
     /************************* just show ************************************/
-	private String userName;
-	/************************* just show ************************************/
-	
-	public String getUserName() {
-		return userName;
-	}
+    private String userName;
 
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+    /************************* just show ************************************/
 
-	/**
-	 * 获取可用余额
-	 * 
-	 * @return
-	 */
-	public BigDecimal getAvailableBalance() {
-		return this.balance.subtract(unbalance);
-	}
+    public String getUserName() {
+        return userName;
+    }
 
-	/**
-	 * 获取实际可结算金额
-	 * 
-	 * @return
-	 */
-	public BigDecimal getAvailableSettAmount() {
-		BigDecimal subSettAmount = this.settAmount.subtract(unbalance);
-		if (getAvailableBalance().compareTo(subSettAmount) == -1) {
-			return getAvailableBalance();
-		}
-		return subSettAmount;
-	}
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
-	/**
-	 * 验证可用余额是否足够
-	 * 
-	 * @param amount
-	 * @return
-	 */
-	public boolean availableBalanceIsEnough(BigDecimal amount) {
+    /**
+     * 获取可用余额
+     * @return
+     */
+    public BigDecimal getAvailableBalance() {
+        return this.balance.subtract(unbalance);
+    }
 
-		return this.getAvailableBalance().compareTo(amount) >= 0;
-	}
+    /**
+     * 获取实际可结算金额
+     * @return
+     */
+    public BigDecimal getAvailableSettAmount() {
+        BigDecimal subSettAmount = this.settAmount.subtract(unbalance);
+        if (getAvailableBalance().compareTo(subSettAmount) < 0) {
+            return getAvailableBalance();
+        }
+        return subSettAmount;
+    }
+
+    /**
+     * 验证可用余额是否足够
+     * @param amount
+     * @return
+     */
+    public boolean availableBalanceIsEnough(BigDecimal amount) {
+
+        return this.getAvailableBalance().compareTo(amount) >= 0;
+    }
 
 
     public String getAccountNo() {

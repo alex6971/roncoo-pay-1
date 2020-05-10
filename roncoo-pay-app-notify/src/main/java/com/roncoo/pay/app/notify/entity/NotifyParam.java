@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.app.notify.entity;
 
 import java.util.Map;
@@ -20,7 +21,7 @@ import java.util.Map;
 /**
  * <b>功能说明:
  * </b>
- * @author  Peter
+ * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
 public class NotifyParam {

@@ -10,5 +10,10 @@ spring:
     view:
       prefix: /
       suffix: .jsp
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.126.3:8848
+      
 logging:
   config: classpath:logback.xml

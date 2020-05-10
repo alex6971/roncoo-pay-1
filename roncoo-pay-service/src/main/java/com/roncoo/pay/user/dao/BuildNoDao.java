@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.user.dao;
 
 import com.roncoo.pay.common.core.dao.BaseDao;
@@ -23,7 +24,4 @@ import com.roncoo.pay.user.entity.SeqBuild;
  * 龙果学院：www.roncoo.com
  * @author：zenghao
  */
-public interface BuildNoDao extends BaseDao<SeqBuild> {
-
-
-}
+public interface BuildNoDao extends BaseDao<SeqBuild> {}

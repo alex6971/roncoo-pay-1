@@ -10,7 +10,7 @@ import com.roncoo.pay.notify.entity.RpNotifyRecord;
  * @公司名称:广州市领课网络科技有限公司 龙果学院(www.roncoo.com)
  * @版本:V1.0
  */
-public interface RpNotifyRecordDao  extends BaseDao<RpNotifyRecord> {
+public interface RpNotifyRecordDao extends BaseDao<RpNotifyRecord> {
 
     RpNotifyRecord getNotifyByMerchantNoAndMerchantOrderNoAndNotifyType(String merchantNo, String merchantOrderNo, String notifyType);
 

@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.user.exception;
 
 import com.roncoo.pay.common.core.exception.BizException;
@@ -27,11 +28,11 @@ import org.apache.commons.logging.LogFactory;
 public class PayBizException extends BizException {
 
     /**
-	 *
-	 */
-	private static final long serialVersionUID = -7163126205323125757L;
+     *
+     */
+    private static final long serialVersionUID = -7163126205323125757L;
 
-	/** 支付方式已存在 **/
+    /** 支付方式已存在 **/
     public static final int PAY_TYPE_IS_EXIST = 101;
 
     /** 支付产品已存在 **/

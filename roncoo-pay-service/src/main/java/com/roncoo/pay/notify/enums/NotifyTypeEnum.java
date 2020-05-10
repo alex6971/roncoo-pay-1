@@ -52,7 +52,7 @@ public enum NotifyTypeEnum {
         return enumMap;
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public static List toList() {
         NotifyTypeEnum[] ary = NotifyTypeEnum.values();
         List list = new ArrayList();
@@ -76,7 +76,6 @@ public enum NotifyTypeEnum {
 
     /**
      * 取枚举的json字符串
-     *
      * @return
      */
     public static String getJsonStr() {

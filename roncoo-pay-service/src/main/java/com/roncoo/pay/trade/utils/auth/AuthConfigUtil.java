@@ -1,11 +1,10 @@
 package com.roncoo.pay.trade.utils.auth;
 
 import com.roncoo.pay.trade.utils.alipay.config.AlipayConfigUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.util.Properties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class AuthConfigUtil {
 
@@ -31,7 +30,7 @@ public class AuthConfigUtil {
             properties.load(AlipayConfigUtil.class.getClassLoader().getResourceAsStream(CONF_URL));
             init();
         } catch (IOException e) {
-            logger.error("鉴权配置文件加载失败!{}", e);
+            logger.error("鉴权配置文件加载失败!", e);
         }
     }
 

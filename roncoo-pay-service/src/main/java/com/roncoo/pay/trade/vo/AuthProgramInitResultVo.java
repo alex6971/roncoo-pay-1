@@ -1,7 +1,6 @@
 package com.roncoo.pay.trade.vo;
 
 import com.roncoo.pay.trade.enums.TradeStatusEnum;
-
 import java.io.Serializable;
 
 public class AuthProgramInitResultVo implements Serializable {

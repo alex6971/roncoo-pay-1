@@ -1,29 +1,29 @@
 package com.roncoo.pay.trade.bo;
 
+import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
-import java.math.BigDecimal;
 
 /**
  * 用户被扫请求Bo
  */
 public class F2FPayRequestBo implements Serializable {
 
-    @Size(min = 16 , max = 32 , message = "商户Key[payKey]长度最小16位最大32位")
+    @Size(min = 16, max = 32, message = "商户Key[payKey]长度最小16位最大32位")
     @NotNull(message = "商户Key[payKey]不能为空")
     private String payKey;
 
-    @Size(min = 16 , max = 20 , message = "支付授权码[authCode]长度最小16位最大20位")
+    @Size(min = 16, max = 20, message = "支付授权码[authCode]长度最小16位最大20位")
     @NotNull(message = "商支付授权码户Key[authCode]不能为空")
     private String authCode;
 
-    @Size(max = 200 , message = "商品名称[productName]长度最大200位")
+    @Size(max = 200, message = "商品名称[productName]长度最大200位")
     @NotNull(message = "商品名称[productName]不能为空")
     private String productName;
 
-    @Size(min = 5 ,  max = 20 , message = "商品订单号[orderNo]长度最小5位，最大20位")
+    @Size(min = 5, max = 20, message = "商品订单号[orderNo]长度最小5位，最大20位")
     @NotNull(message = "商品订单号[orderNo]不能为空")
     private String orderNo;
 
@@ -31,15 +31,15 @@ public class F2FPayRequestBo implements Serializable {
     @NotNull(message = "订单金额[orderPrice]不能为空")
     private BigDecimal orderPrice;
 
-    @Size(min = 1 ,  max = 20 , message = "订单IP[orderIp]长度最小1位，最大20位")
+    @Size(min = 1, max = 20, message = "订单IP[orderIp]长度最小1位，最大20位")
     @NotNull(message = "订单IP[orderIp]不能为空")
     private String orderIp;
 
-    @Size(min = 1 ,  max = 8 , message = "订单日期[orderDate]长度最小1位，最大8位")
+    @Size(min = 1, max = 8, message = "订单日期[orderDate]长度最小1位，最大8位")
     @NotNull(message = "订单日期[orderDate]不能为空")
     private String orderDate;
 
-    @Size(min = 1 ,  max = 14 , message = "订单时间[orderTime]长度最小1位，最大14位")
+    @Size(min = 1, max = 14, message = "订单时间[orderTime]长度最小1位，最大14位")
     @NotNull(message = "订单时间[orderTime]不能为空")
     private String orderTime;
 
@@ -48,7 +48,7 @@ public class F2FPayRequestBo implements Serializable {
 
     private String remark;//支付备注
 
-    @Size(min = 1 ,  max = 14 , message = "交易类型[payType]长度最小1位，最大14位")
+    @Size(min = 1, max = 14, message = "交易类型[payType]长度最小1位，最大14位")
     @NotNull(message = "交易类型[payType]不能为空")
     private String payType;//支付类型
 
@@ -142,18 +142,6 @@ public class F2FPayRequestBo implements Serializable {
 
     @Override
     public String toString() {
-        return "F2FPayRequestBo{" +
-                "payKey='" + payKey + '\'' +
-                ", authCode='" + authCode + '\'' +
-                ", productName='" + productName + '\'' +
-                ", orderNo='" + orderNo + '\'' +
-                ", orderPrice=" + orderPrice +
-                ", orderIp='" + orderIp + '\'' +
-                ", orderDate='" + orderDate + '\'' +
-                ", orderTime='" + orderTime + '\'' +
-                ", sign='" + sign + '\'' +
-                ", remark='" + remark + '\'' +
-                ", payType='" + payType + '\'' +
-                '}';
+        return "F2FPayRequestBo{" + "payKey='" + payKey + '\'' + ", authCode='" + authCode + '\'' + ", productName='" + productName + '\'' + ", orderNo='" + orderNo + '\'' + ", orderPrice=" + orderPrice + ", orderIp='" + orderIp + '\'' + ", orderDate='" + orderDate + '\'' + ", orderTime='" + orderTime + '\'' + ", sign='" + sign + '\'' + ", remark='" + remark + '\'' + ", payType='" + payType + '\'' + '}';
     }
 }

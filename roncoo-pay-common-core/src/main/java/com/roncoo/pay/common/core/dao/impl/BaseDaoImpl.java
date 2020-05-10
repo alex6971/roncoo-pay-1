@@ -20,15 +20,15 @@ import com.roncoo.pay.common.core.entity.BaseEntity;
 import com.roncoo.pay.common.core.exception.BizException;
 import com.roncoo.pay.common.core.page.PageBean;
 import com.roncoo.pay.common.core.page.PageParam;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 
 /**
  * 据访问层基础支撑类.
@@ -86,7 +86,7 @@ public abstract class BaseDaoImpl<T extends BaseEntity> implements BaseDao<T> {
      * 批量插入数据.
      */
     public int insert(List<T> list) {
-        if (list.isEmpty() || list.size() <= 0) {
+        if (CollectionUtils.isEmpty(list)) {
             return 0;
         }
         int result = sessionTemplate.insert(getStatement(SQL_BATCH_INSERT), list);
@@ -112,7 +112,7 @@ public abstract class BaseDaoImpl<T extends BaseEntity> implements BaseDao<T> {
      * 根据id批量更新数据.
      */
     public int update(List<T> list) {
-        if (list.isEmpty() || list.size() <= 0) {
+        if (CollectionUtils.isEmpty(list)) {
             return 0;
         }
         int result = sessionTemplate.update(getStatement(SQL_BATCH_UPDATE_BY_IDS), list);
@@ -207,7 +207,7 @@ public abstract class BaseDaoImpl<T extends BaseEntity> implements BaseDao<T> {
      * 根据id批量删除数据.
      */
     public int delete(List<T> list) {
-        if (list.isEmpty() || list.size() <= 0) {
+        if (CollectionUtils.isEmpty(list)) {
             return 0;
         } else {
             return (int) sessionTemplate.delete(getStatement(SQL_BATCH_DELETE_BY_IDS), list);
@@ -228,7 +228,7 @@ public abstract class BaseDaoImpl<T extends BaseEntity> implements BaseDao<T> {
     /**
      * 分页查询数据 .
      */
-    public PageBean listPage(PageParam pageParam, Map<String, Object> paramMap) {
+    public PageBean<T> listPage(PageParam pageParam, Map<String, Object> paramMap) {
         if (paramMap == null) {
             paramMap = new HashMap<String, Object>();
         }

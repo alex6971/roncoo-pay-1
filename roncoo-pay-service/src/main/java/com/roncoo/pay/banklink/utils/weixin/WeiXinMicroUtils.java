@@ -7,10 +7,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.roncoo.pay.trade.entity.RpMicroSubmitRecord;
 import com.roncoo.pay.trade.utils.WeixinConfigUtil;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.*;
 
 /**
  * 微信小微商户工具
@@ -36,7 +39,6 @@ public class WeiXinMicroUtils {
 
     /**
      * 小微商户-进件
-     *
      * @param submitParam
      * @return
      */
@@ -65,6 +67,7 @@ public class WeiXinMicroUtils {
         }
         try {
             // 获取证书明文，备用字段1:APIv3Secret
+            assert associatedData != null;
             String ciphertext = WxCommonUtil.aesgcmDecrypt(associatedData, nonce, ciphertextEncrypt, APIV3_SECRET);
             SortedMap<String, Object> paramMap = new TreeMap<>();
             paramMap.put("version", "3.0");
@@ -108,7 +111,6 @@ public class WeiXinMicroUtils {
 
     /**
      * 小微商户-进件查询
-     *
      * @param businessCode
      * @return
      */

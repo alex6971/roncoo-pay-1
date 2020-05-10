@@ -3,7 +3,6 @@ package com.roncoo.pay.notify.entity;
 import com.roncoo.pay.common.core.entity.BaseEntity;
 import com.roncoo.pay.notify.enums.NotifyStatusEnum;
 import com.roncoo.pay.notify.enums.NotifyTypeEnum;
-
 import java.util.Date;
 
 /**
@@ -13,15 +12,14 @@ import java.util.Date;
  * @公司名称:广州市领课网络科技有限公司 龙果学院(www.roncoo.com)
  * @版本:V1.0
  */
-public class RpNotifyRecord  extends BaseEntity {
+public class RpNotifyRecord extends BaseEntity {
 
-    
 
-//    private Long notifyId;
-//
-//    public Long getNotifyId() {
-//        return notifyId;
-//    }
+    //    private Long notifyId;
+    //
+    //    public Long getNotifyId() {
+    //        return notifyId;
+    //    }
 
     private Date createTime;
 
@@ -50,8 +48,8 @@ public class RpNotifyRecord  extends BaseEntity {
         super();
     }
 
-    public RpNotifyRecord(Date createTime, Date lastNotifyTime, Integer notifyTimes, Integer limitNotifyTimes, String url, String merchantNo,
-                          String merchantOrderNo, NotifyStatusEnum status, NotifyTypeEnum type) {
+    public RpNotifyRecord(Date createTime, Date lastNotifyTime, Integer notifyTimes, Integer limitNotifyTimes, String url, String merchantNo, String merchantOrderNo, NotifyStatusEnum status,
+            NotifyTypeEnum type) {
         super();
         this.createTime = createTime;
         this.lastNotifyTime = lastNotifyTime;

@@ -13,10 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.controller;
 
 import com.roncoo.pay.utils.MerchantApiUtil;
 import com.roncoo.pay.utils.PayConfigUtil;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -29,15 +39,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
 /**
  * <b>功能说明:龙果支付控制类
  * </b>
- *
  * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
@@ -102,7 +106,6 @@ public class RoncooPayController extends BaseController {
 
     /**
      * 模拟商户F2F条码支付
-     *
      * @param httpServletRequest
      * @param httpServletResponse
      * @param model
@@ -166,7 +169,6 @@ public class RoncooPayController extends BaseController {
 
     /**
      * 模拟小程序支付
-     *
      * @param httpServletRequest
      * @param httpServletResponse
      * @param model
@@ -227,9 +229,9 @@ public class RoncooPayController extends BaseController {
         try {
             List<NameValuePair> list = new ArrayList<>();
             for (Map.Entry<String, Object> entry : paramMap.entrySet()) {
-                list.add(new BasicNameValuePair(entry.getKey(),String.valueOf(entry.getValue())));
+                list.add(new BasicNameValuePair(entry.getKey(), String.valueOf(entry.getValue())));
             }
-            post.setEntity(new UrlEncodedFormEntity(list,"UTF-8"));
+            post.setEntity(new UrlEncodedFormEntity(list, StandardCharsets.UTF_8));
             HttpResponse httpResponse = httpClient.execute(post);
             String result = EntityUtils.toString(httpResponse.getEntity());
         } catch (Exception e) {
@@ -289,9 +291,9 @@ public class RoncooPayController extends BaseController {
         try {
             List<NameValuePair> list = new ArrayList<>();
             for (Map.Entry<String, Object> entry : paramMap.entrySet()) {
-                list.add(new BasicNameValuePair(entry.getKey(),String.valueOf(entry.getValue())));
+                list.add(new BasicNameValuePair(entry.getKey(), String.valueOf(entry.getValue())));
             }
-            post.setEntity(new UrlEncodedFormEntity(list,"UTF-8"));
+            post.setEntity(new UrlEncodedFormEntity(list, StandardCharsets.UTF_8));
             HttpResponse httpResponse = httpClient.execute(post);
             String result = EntityUtils.toString(httpResponse.getEntity());
             System.out.println(result);

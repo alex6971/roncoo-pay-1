@@ -13,25 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.roncoo.pay.app.notify.core;
 
 import com.roncoo.pay.AppNotifyApplication;
 import com.roncoo.pay.app.notify.entity.NotifyParam;
 import com.roncoo.pay.notify.entity.RpNotifyRecord;
 import com.roncoo.pay.notify.enums.NotifyStatusEnum;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.Map;
-
 /**
  * <b>功能说明:
  * </b>
- * @author  Peter
+ * @author Peter
  * <a href="http://www.roncoo.com">龙果学院(www.roncoo.com)</a>
  */
 @Component
@@ -49,9 +49,9 @@ public class NotifyQueue implements Serializable {
 
     @Autowired
     private NotifyPersist notifyPersist;
+
     /**
      * 将传过来的对象进行通知次数判断，之后决定是否放在任务队列中
-     *
      * @param notifyRecord
      * @throws Exception
      */
@@ -66,7 +66,7 @@ public class NotifyQueue implements Serializable {
         } catch (Exception e) {
             LOG.error(e);
         }
-        if (notifyRecord.getVersion().intValue() == 0) {// 刚刚接收到的数据
+        if (notifyRecord.getVersion() == 0) {// 刚刚接收到的数据
             notifyRecord.setLastNotifyTime(new Date());
         }
         long time = notifyRecord.getLastNotifyTime().getTime();
@@ -82,10 +82,8 @@ public class NotifyQueue implements Serializable {
         } else {
             try {
                 // 持久化到数据库中
-                notifyPersist.updateNotifyRord(notifyRecord.getId(),
-                        notifyRecord.getNotifyTimes(), NotifyStatusEnum.FAILED.name());
-                LOG.info("Update NotifyRecord failed,merchantNo:" + notifyRecord.getMerchantNo() + ",merchantOrderNo:"
-                        + notifyRecord.getMerchantOrderNo());
+                notifyPersist.updateNotifyRord(notifyRecord.getId(), notifyRecord.getNotifyTimes(), NotifyStatusEnum.FAILED.name());
+                LOG.info("Update NotifyRecord failed,merchantNo:" + notifyRecord.getMerchantNo() + ",merchantOrderNo:" + notifyRecord.getMerchantOrderNo());
             } catch (Exception e) {
                 LOG.error(e);
             }

@@ -1,7 +1,6 @@
 package com.roncoo.pay.notify.entity;
 
 import com.roncoo.pay.common.core.entity.BaseEntity;
-
 import java.util.Date;
 
 /**
@@ -12,6 +11,7 @@ import java.util.Date;
  * @版本:V1.0
  */
 public class RpNotifyRecordLog extends BaseEntity {
+
     /** 通知记录ID **/
     private String notifyId;
 

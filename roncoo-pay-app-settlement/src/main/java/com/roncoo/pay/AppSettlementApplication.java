@@ -11,7 +11,7 @@ public class AppSettlementApplication {
     public static ConfigurableApplicationContext context;
 
     public static void main(String[] args) {
-//        SpringApplication.run(AppSettlementApplication.class, args);
+        //        SpringApplication.run(AppSettlementApplication.class, args);
         context = new SpringApplicationBuilder().sources(AppSettlementApplication.class).web(WebApplicationType.NONE).run(args);
     }
 
