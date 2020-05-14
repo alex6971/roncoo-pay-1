@@ -72,7 +72,7 @@ public class WeiXinPayUtils {
             // 设置为gbk可以解决服务器接收时读取的数据中文乱码问题
             if (null != xmlStr) {
                 OutputStream outputStream = urlCon.getOutputStream();
-                outputStream.write(xmlStr.getBytes(StandardCharsets.UTF_8));
+                outputStream.write(xmlStr.getBytes("UTF-8"));
                 outputStream.flush();
                 outputStream.close();
             }
@@ -84,7 +84,8 @@ public class WeiXinPayUtils {
             // 得到xml根元素
             Element root = document.getRootElement();
             // 得到根元素的所有子节点
-            @SuppressWarnings("unchecked") List<Element> elementList = root.elements();
+            @SuppressWarnings("unchecked")
+            List<Element> elementList = root.elements();
             // 遍历所有子节点
             for (Element e : elementList) {
                 map.put(e.getName(), e.getText());
@@ -117,9 +118,9 @@ public class WeiXinPayUtils {
         sb.append("<mch_id>").append(weiXinPrePay.getMchId()).append("</mch_id>");
         sb.append("<nonce_str>").append(weiXinPrePay.getNonceStr()).append("</nonce_str>");
         sb.append("<notify_url>").append(weiXinPrePay.getNotifyUrl()).append("</notify_url>");
-        if (WeiXinTradeTypeEnum.NATIVE.name().equals(weiXinPrePay.getTradeType().name())) {
+        if (WeiXinTradeTypeEnum.NATIVE.name().equals(weiXinPrePay.getTradeType())) {
             sb.append("<product_id>").append(weiXinPrePay.getProductId()).append("</product_id>");
-        } else if (WeiXinTradeTypeEnum.JSAPI.name().equals(weiXinPrePay.getTradeType().name())) {
+        } else if (WeiXinTradeTypeEnum.JSAPI.name().equals(weiXinPrePay.getTradeType())) {
             sb.append("<openid>").append(weiXinPrePay.getOpenid()).append("</openid>");
         }
         sb.append("<out_trade_no>").append(weiXinPrePay.getOutTradeNo()).append("</out_trade_no>");
@@ -129,9 +130,27 @@ public class WeiXinPayUtils {
         sb.append("<total_fee>").append(weiXinPrePay.getTotalFee()).append("</total_fee>");
         sb.append("<trade_type>").append(weiXinPrePay.getTradeType().name()).append("</trade_type>");
         sb.append("<sign>").append(weiXinPrePay.getSign()).append("</sign>");
+        sb.append("<appid>").append("wx2421b1c4370ec43b").append("</appid>");
+        sb.append("<sub_appid>").append("wx8888888888888888").append("</sub_appid>");
+        sb.append("<attach>").append("支付测试").append("</attach>");
         sb.append("</xml>");
 
-        return sb.toString();
+        
+        String string = "<xml>\n" 
+                + "   <appid>wx2421b1c4370ec43b</appid>\n" 
+                + "   <attach>支付测试</attach>\n" 
+                + "   <body>APP支付测试</body>\n" 
+                + "   <mch_id>10000100</mch_id>\n" 
+                + "   <sub_appid>wx8888888888888888</sub_appid>\n" 
+                + "   <nonce_str>1add1a30ac87aa2db72f57a2375d8fec</nonce_str>\n" 
+                + "   <notify_url>http://wxpay.wxutil.com/pub_v2/pay/notify.v2.php</notify_url>\n" 
+                + "   <out_trade_no>1415659990</out_trade_no>\n" 
+                + "   <spbill_create_ip>14.23.150.211</spbill_create_ip>\n" 
+                + "   <total_fee>1</total_fee>\n" 
+                + "   <trade_type>APP</trade_type>\n" 
+                + "   <sign>"+weiXinPrePay.getSign()+"</sign>\n" 
+                + "</xml>";
+        return string;
     }
 
     /**

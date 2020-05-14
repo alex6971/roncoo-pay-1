@@ -143,4 +143,8 @@ public class PmsOperator extends PermissionBaseEntity {
         return loginName + salt;
     }
 
+    @Override
+    public String toString() {
+        return "PmsOperator{" + "loginName='" + loginName + '\'' + ", loginPwd='" + loginPwd + '\'' + ", realName='" + realName + '\'' + ", mobileNo='" + mobileNo + '\'' + ", type='" + type + '\'' + ", salt='" + salt + '\'' + '}';
+    }
 }
